@@ -1,0 +1,174 @@
+:root{
+  --primary-color:teal;
+  
+}
+
+
+.header-section {
+  background-color:rgba(0, 128, 128, 0.303);
+ 
+}
+
+.home-section{
+  margin-top: 10vh;
+}
+
+.icon-color {
+  color:var(--primary-color);
+}
+
+body {
+  overflow-x: hidden;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+
+ 
+}
+
+blockquote {
+  background-image: linear-gradient(to left, #20bf55, #01baef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+h1 {
+  color:var(--primary-color);
+}
+
+footer {
+  color:var(--primary-color);
+}
+
+
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color:var(--primary-color);
+  outline: none;
+  box-shadow:none;
+  border: none;
+
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+footer a {
+  text-decoration: none;
+  color: #fff;
+  transition: 0.5s;
+}
+
+footer a:hover {
+  color: gray;
+}
+
+footer ul {
+  width: 100%;
+}
+
+footer ul li {
+  display: inline-block;
+  margin: 0px 30px;
+}
+
+footer a i {
+  font-size: 2em;
+  margin: 0% 1%;
+}
+
+.footer-section{
+  background-color: rgba(0, 128, 128, 0.303);
+}
+
+#service{
+  backface-visibility: visible;
+}
+.nav-link{
+  color: red;
+}
+.nav-link:hover{
+  color: gray;
+}
+#name{
+  font-family: cursive;
+}
+
+/* Custom CSS */
+.fixed-top {
+  background-color: var(--primary-color); /* Change the header background color */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#name {
+  font-family: "Arial", sans-serif; /* Change the font family for the name */
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.navbar-toggler {
+  color: #fff; /* Change the color of the navbar toggler icon */
+}
+
+.nav-link {
+  color: #fff !important; /* Change the color of the nav links */
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #ccc !important; /* Change the hover color of the nav links */
+}
+
+
+
+
+/* Custom CSS */
+.fixed-top {
+  background: linear-gradient(to right, #20bf55, #01baef); /* Teal gradient background */
+  padding-top: 20px;
+  padding-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#name {
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.navbar-toggler {
+  color: #fff;
+  border: none;
+}
+
+.nav-link {
+  color: #fff !important;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.nav-link:hover {
+  color: lightslategray !important;
+  text-decoration: none;
+}
+
+/* Custom CSS */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for transform and box-shadow */
+}
+
+.card:hover {
+  transform: scale(1.05); /* Slightly scale up the card on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect on hover */
+}
+
+
