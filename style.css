@@ -178,3 +178,6 @@ footer a i {
 }
 
 
+#header{
+  transition: top 0.3s;
+}
