@@ -2,13 +2,10 @@ import { projects } from "@/lib/projects";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import MagneticButton from "@/components/MagneticButton";
 import { Metadata } from "next";
 
 export async function generateStaticParams() {
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -18,13 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-
-  if (!project) {
-    return {
-      title: "Project Not Found",
-    };
-  }
-
+  if (!project) return { title: "Project Not Found" };
   return {
     title: project.title,
     description: project.description,
@@ -36,6 +27,58 @@ export async function generateMetadata({
   };
 }
 
+// ── Shared style helpers ──────────────────────────────────────────────────────
+const PX = (size = "0.55rem", color = "#fff"): React.CSSProperties => ({
+  fontFamily: "var(--font-press-start), monospace",
+  fontSize: size,
+  color,
+  letterSpacing: "0.06em",
+  lineHeight: 1.8,
+});
+
+const VT = (color = "var(--text-secondary)"): React.CSSProperties => ({
+  fontFamily: "var(--font-vt323), monospace",
+  fontSize: "1.2rem",
+  color,
+  lineHeight: 1.7,
+  letterSpacing: "0.03em",
+});
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+function SectionBlock({
+  index,
+  label,
+  children,
+  color = "var(--neon-cyan)",
+}: {
+  index: string;
+  label: string;
+  children: React.ReactNode;
+  color?: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "160px 1fr",
+        gap: "1.5rem",
+        borderLeft: `4px solid ${color}`,
+        paddingLeft: "1.25rem",
+      }}
+      className="grid-cols-1 md:grid-cols-[160px_1fr]"
+    >
+      {/* Label column */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <span style={{ ...PX("0.45rem", color) }}>{index}</span>
+        <span style={{ ...PX("0.55rem", "#fff") }}>{label}</span>
+      </div>
+      {/* Content */}
+      <p style={VT()}>{children}</p>
+    </div>
+  );
+}
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 export default async function ProjectPage({
   params,
 }: {
@@ -43,118 +86,309 @@ export default async function ProjectPage({
 }) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-
-  if (!project) {
-    notFound();
-  }
+  if (!project) notFound();
 
   return (
-    <article className="min-h-screen pb-20">
-      {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-end pb-20 px-6 bg-[var(--bg-secondary)] overflow-hidden">
-        <div className="absolute inset-0 z-0">
+    <article
+      style={{
+        minHeight: "100vh",
+        paddingBottom: "5rem",
+        background: "var(--bg-primary)",
+      }}
+    >
+      {/* ── Hero ───────────────────────────────────────────────────── */}
+      <section
+        style={{
+          position: "relative",
+          height: "55vh",
+          minHeight: 320,
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "flex-end",
+          borderBottom: "4px solid var(--neon-green)",
+        }}
+      >
+        {/* Blurred bg image */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           <Image
             src={project.image}
             alt={project.title}
             fill
-            className="object-cover opacity-30 blur-sm scale-110"
+            className="object-cover"
+            style={{
+              opacity: 0.2,
+              filter: "blur(4px) contrast(1.2)",
+              transform: "scale(1.08)",
+            }}
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent" />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to top, var(--bg-primary) 30%, transparent 100%)",
+            }}
+          />
         </div>
 
-        <div className="relative z-10 max-w-[1200px] w-full mx-auto">
+        {/* Scanlines overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: "none",
+            background:
+              "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.2) 2px, rgba(0,0,0,0.2) 4px)",
+          }}
+        />
+
+        {/* Content */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            maxWidth: 1200,
+            width: "100%",
+            margin: "0 auto",
+            padding: "0 1.5rem 2.5rem",
+          }}
+        >
+          {/* Back link */}
           <Link
             href="/#projects"
-            className="inline-flex items-center text-sm text-[var(--neon-cyan)] hover:underline mb-6 group"
+            style={{
+              ...PX("0.5rem", "var(--neon-cyan)"),
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: "1.25rem",
+            }}
           >
-            ← Back to Projects
+            ◀ BACK
           </Link>
-          <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
+
+          {/* Title */}
+          <h1
+            style={{
+              fontFamily: "var(--font-press-start), monospace",
+              fontSize: "clamp(1rem, 3.5vw, 2rem)",
+              color: "#fff",
+              textShadow: "4px 4px 0 var(--neon-purple)",
+              marginBottom: "1.25rem",
+              lineHeight: 1.4,
+              textTransform: "uppercase",
+            }}
+          >
             {project.title}
           </h1>
-          <div className="flex flex-wrap gap-4 mb-8">
+
+          {/* Tech badges */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 8,
+              marginBottom: "1.5rem",
+            }}
+          >
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-3 py-1 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] text-sm font-medium"
+                style={{
+                  ...PX("0.45rem", "var(--neon-green)"),
+                  background: "#000",
+                  border: "2px solid var(--neon-green)",
+                  padding: "4px 10px",
+                  boxShadow: "3px 3px 0 var(--neon-green)",
+                }}
               >
                 {tech}
               </span>
             ))}
           </div>
-          <div className="flex gap-4">
+
+          {/* CTA buttons */}
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {project.github && (
-              <MagneticButton
+              <a
                 href={project.github}
-                // @ts-ignore
                 target="_blank"
                 rel="noopener noreferrer"
-                className="magnetic-btn-primary"
+                className="magnetic-btn magnetic-btn-primary"
               >
-                View Code
-              </MagneticButton>
+                ▶ VIEW CODE
+              </a>
             )}
             {project.demo && (
-              <MagneticButton
+              <a
                 href={project.demo}
-                // @ts-ignore
                 target="_blank"
                 rel="noopener noreferrer"
-                className="magnetic-btn-secondary"
+                className="magnetic-btn magnetic-btn-secondary"
               >
-                Live Demo
-              </MagneticButton>
+                ▶ LIVE DEMO
+              </a>
             )}
           </div>
         </div>
       </section>
 
-      {/* Content */}
-      <div className="max-w-[800px] mx-auto px-6 mt-20 space-y-20">
-        <div className="grid md:grid-cols-[200px_1fr] gap-10">
-          <h2 className="text-xl font-bold text-[var(--text-secondary)]">
-            The Problem
-          </h2>
-          <p className="text-lg leading-relaxed text-[var(--text-primary)]">
-            {project.problem}
-          </p>
+      {/* ── Body ───────────────────────────────────────────────────── */}
+      <div
+        style={{
+          maxWidth: 860,
+          margin: "0 auto",
+          padding: "4rem 1.5rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "3rem",
+        }}
+      >
+        {/* Pixel section divider label */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+          }}
+        >
+          <span style={{ ...PX("0.5rem", "var(--neon-cyan)") }}>
+            &gt; PROJECT.INFO
+          </span>
+          <div
+            style={{
+              flex: 1,
+              height: 3,
+              background:
+                "repeating-linear-gradient(90deg, var(--neon-cyan) 0 6px, transparent 6px 12px)",
+              opacity: 0.3,
+            }}
+          />
         </div>
 
-        <div className="grid md:grid-cols-[200px_1fr] gap-10">
-          <h2 className="text-xl font-bold text-[var(--text-secondary)]">
-            The Solution
-          </h2>
-          <p className="text-lg leading-relaxed text-[var(--text-primary)]">
-            {project.solution}
-          </p>
-        </div>
+        {/* Problem / Solution / Results */}
+        <SectionBlock index="01" label="THE PROBLEM" color="var(--neon-cyan)">
+          {project.problem}
+        </SectionBlock>
 
-        <div className="grid md:grid-cols-[200px_1fr] gap-10">
-          <h2 className="text-xl font-bold text-[var(--text-secondary)]">
-            The Results
-          </h2>
-          <p className="text-lg leading-relaxed text-[var(--text-primary)]">
-            {project.results}
-          </p>
-        </div>
+        <SectionBlock index="02" label="THE SOLUTION" color="var(--neon-green)">
+          {project.solution}
+        </SectionBlock>
 
-        {/* Screenshots Placeholder */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold mb-8">Screenshots</h2>
-          <div className="glass p-4 rounded-xl">
-            <div className="relative aspect-video rounded-lg overflow-hidden bg-[var(--bg-secondary)]">
+        <SectionBlock index="03" label="THE RESULTS" color="var(--neon-purple)">
+          {project.results}
+        </SectionBlock>
+
+        {/* Screenshot */}
+        <div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: "1rem",
+            }}
+          >
+            <span style={{ ...PX("0.5rem", "var(--neon-cyan)") }}>
+              &gt; SCREENSHOT
+            </span>
+            <div
+              style={{
+                flex: 1,
+                height: 3,
+                background:
+                  "repeating-linear-gradient(90deg, var(--neon-cyan) 0 6px, transparent 6px 12px)",
+                opacity: 0.3,
+              }}
+            />
+          </div>
+
+          <div
+            style={{
+              background: "#000",
+              border: "4px solid var(--neon-green)",
+              boxShadow: "8px 8px 0 var(--neon-cyan)",
+              padding: 8,
+            }}
+          >
+            {/* Fake window bar */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                borderBottom: "3px solid var(--neon-green)",
+                paddingBottom: 6,
+                marginBottom: 8,
+              }}
+            >
+              {[
+                "var(--neon-green)",
+                "var(--neon-cyan)",
+                "var(--neon-purple)",
+              ].map((c, i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: "inline-block",
+                    width: 10,
+                    height: 10,
+                    background: c,
+                    border: `2px solid ${c}`,
+                  }}
+                />
+              ))}
+              <span style={{ ...PX("0.4rem", "#555"), marginLeft: 8 }}>
+                {project.title.toUpperCase()}.PNG
+              </span>
+            </div>
+
+            <div
+              style={{
+                position: "relative",
+                aspectRatio: "16/9",
+                overflow: "hidden",
+              }}
+            >
               <Image
                 src={project.image}
-                alt={`${project.title} Screenshot`}
+                alt={`${project.title} screenshot`}
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
+                style={{ objectFit: "cover", imageRendering: "pixelated" }}
+              />
+              {/* Scanline overlay on image */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  pointerEvents: "none",
+                  background:
+                    "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)",
+                }}
               />
             </div>
-            <p className="text-center text-sm text-[var(--text-secondary)] mt-4">
-              Main Application Interface
+
+            <p
+              style={{
+                ...VT("#555"),
+                fontSize: "0.9rem",
+                marginTop: 6,
+                textAlign: "center",
+              }}
+            >
+              MAIN APPLICATION INTERFACE
             </p>
           </div>
+        </div>
+
+        {/* Back button */}
+        <div>
+          <Link href="/#projects" className="magnetic-btn">
+            ◀ BACK TO PROJECTS
+          </Link>
         </div>
       </div>
     </article>

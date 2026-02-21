@@ -59,26 +59,30 @@ export default function Projects() {
       className="relative bg-[var(--bg-secondary)]"
     >
       <div className="section-container">
-        {/* ── Heading ── */}
-        <div className="text-center mb-16">
+        {/* Header */}
+        <div className="flex justify-center items-center flex-col">
           <h2 className="section-heading">
-            &gt; Featured <span className="gradient-text">Projects</span>_
+            &gt; FEATURED <span className="gradient-text">PROJECTS</span>_
           </h2>
-
-          <p className="section-subheading mx-auto max-w-2xl">
-            A selection of projects that showcase my expertise across different
-            domains.
+          <p
+            className="section-subheading mx-auto text-center"
+            style={{
+              marginBottom: "2.5rem",
+              textAlign: "center",
+            }}
+          >
+            [ SELECT A CATEGORY TO VIEW DATA ]
           </p>
         </div>
-
         {/* ── Category filter ── */}
         <div
+          className="reveal-up"
           style={{
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            gap: 12,
-            marginBottom: 48,
+            gap: 16,
+            marginBottom: 40,
           }}
         >
           {categories.map((cat) => (
@@ -295,11 +299,11 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
         {/* ── Card body ── */}
         <div
           style={{
-            padding: "16px 18px 18px",
+            padding: "20px 20px",
             display: "flex",
             flexDirection: "column",
             flex: 1,
-            gap: 10,
+            gap: 14,
           }}
         >
           {/* Tech tags */}
@@ -338,7 +342,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
           <h3
             style={{
               fontFamily: "var(--font-press-start), monospace",
-              fontSize: "clamp(0.55rem, 1.4vw, 0.75rem)",
+              fontSize: "clamp(0.6rem, 1.5vw, 0.8rem)",
               color: "#fff",
               letterSpacing: "0.03em",
               lineHeight: 1.6,
@@ -372,7 +376,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
               display: "flex",
               alignItems: "center",
               gap: 12,
-              paddingTop: 12,
+              paddingTop: 16,
               borderTop: "2px solid rgba(57,255,20,0.2)",
               flexWrap: "wrap",
             }}
@@ -403,6 +407,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
                   boxShadow: "3px 3px 0 var(--neon-purple)",
                   textDecoration: "none",
                   transition: "transform 0.1s, box-shadow 0.1s",
+                  lineHeight: 1,
                 }}
                 aria-label="GitHub Repository"
               >
@@ -428,6 +433,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
                   textDecoration: "none",
                   transition: "transform 0.1s, box-shadow 0.1s",
                   marginLeft: "auto",
+                  lineHeight: 1,
                 }}
                 aria-label="Live Demo"
               >

@@ -7,13 +7,37 @@ import { skills } from "@/lib/skills";
 const SkillCloud = dynamic(() => import("./SkillCloud"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[400px] flex items-center justify-center">
-      <div className="loading-bar w-32">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-4">
+      <span
+        style={{
+          fontFamily: "var(--font-press-start), monospace",
+          fontSize: "0.55rem",
+          color: "var(--neon-green)",
+          letterSpacing: "0.15em",
+        }}
+      >
+        LOADING MODULES...
+      </span>
+      <div className="loading-bar w-48">
         <div className="loading-bar-fill" />
       </div>
     </div>
   ),
 });
+
+const categoryColors: Record<string, string> = {
+  language: "var(--neon-cyan)",
+  framework: "var(--neon-purple)",
+  tool: "var(--neon-green)",
+  platform: "var(--neon-blue)",
+};
+
+const categoryLabels: Record<string, string> = {
+  language: "LANG",
+  framework: "FRMWK",
+  tool: "TOOL",
+  platform: "PLTFM",
+};
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,37 +53,31 @@ export default function Skills() {
         els.forEach((el, i) => {
           gsap.fromTo(
             el,
-            { y: 60, opacity: 0 },
+            { y: 40, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.8,
+              duration: 0.4,
               delay: i * 0.05,
-              scrollTrigger: {
-                trigger: el,
-                start: "top 85%",
-              },
+              ease: "steps(5)",
+              scrollTrigger: { trigger: el, start: "top 88%" },
             },
           );
         });
       }
 
-      // Animate badges
       const badges = sectionRef.current?.querySelectorAll(".skill-badge");
       if (badges) {
         gsap.fromTo(
           badges,
-          { y: 20, opacity: 0, scale: 0.9 },
+          { y: 16, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            scale: 1,
-            duration: 0.4,
-            stagger: 0.04,
-            scrollTrigger: {
-              trigger: badges[0],
-              start: "top 85%",
-            },
+            duration: 0.3,
+            stagger: 0.03,
+            ease: "steps(3)",
+            scrollTrigger: { trigger: badges[0], start: "top 88%" },
           },
         );
       }
@@ -67,31 +85,91 @@ export default function Skills() {
     loadGSAP();
   }, []);
 
-  const categoryColors: Record<string, string> = {
-    language: "var(--neon-cyan)",
-    framework: "var(--neon-purple)",
-    tool: "var(--neon-green)",
-    platform: "var(--neon-blue)",
-  };
-
   return (
     <section id="skills" ref={sectionRef} className="relative">
       <div className="section-container">
-        <div className="text-center mb-8">
+        {/* Header */}
+        <div className="mb-10">
           <h2 className="section-heading reveal-up">
             &gt; SKILLS &amp; <span className="gradient-text">TECH</span>_
           </h2>
-          <p className="section-subheading mx-auto reveal-up">
-            [ HOVER TO INTERACT ]
-          </p>
+          <p className="section-subheading reveal-up">[ HOVER TO INTERACT ]</p>
         </div>
 
-        {/* 3D Skill Cloud */}
+        {/* Skill Cloud */}
         <div
-          className="w-full h-[400px] md:h-[500px] mb-12 border-4 border-[var(--neon-blue)] bg-[#000]"
-          style={{ boxShadow: "8px 8px 0px var(--neon-blue)" }}
+          className="reveal-up w-full"
+          style={{
+            height: 380,
+            background: "#000",
+            border: "4px solid var(--neon-cyan)",
+            boxShadow: "8px 8px 0 var(--neon-purple)",
+            position: "relative",
+            overflow: "hidden",
+          }}
         >
+          {/* Corner labels */}
+          <span
+            style={{
+              position: "absolute",
+              top: 8,
+              left: 12,
+              zIndex: 10,
+              fontFamily: "var(--font-press-start), monospace",
+              fontSize: "0.45rem",
+              color: "var(--neon-cyan)",
+              opacity: 0.5,
+            }}
+          >
+            SKILL.CLOUD
+          </span>
+          <span
+            style={{
+              position: "absolute",
+              top: 8,
+              right: 12,
+              zIndex: 10,
+              fontFamily: "var(--font-press-start), monospace",
+              fontSize: "0.45rem",
+              color: "var(--neon-cyan)",
+              opacity: 0.5,
+            }}
+          >
+            {skills.length} NODES
+          </span>
+
           <SkillCloud />
+        </div>
+
+        {/* Legend row */}
+        <div
+          className="reveal-up flex flex-wrap justify-center gap-6"
+          style={{ margin: "3rem 0" }}
+        >
+          {Object.entries(categoryLabels).map(([cat, label]) => (
+            <div
+              key={cat}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                fontFamily: "var(--font-press-start), monospace",
+                fontSize: "0.5rem",
+                color: categoryColors[cat],
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 10,
+                  height: 10,
+                  background: categoryColors[cat],
+                  boxShadow: `0 0 6px ${categoryColors[cat]}`,
+                }}
+              />
+              {label}
+            </div>
+          ))}
         </div>
 
         {/* Skill Badges */}
@@ -100,13 +178,15 @@ export default function Skills() {
             <div
               key={skill.name}
               className="skill-badge"
-              style={{
-                borderColor: categoryColors[skill.category],
-              }}
+              style={{ borderColor: categoryColors[skill.category] }}
             >
               <span
-                className="w-2 h-2"
-                style={{ backgroundColor: categoryColors[skill.category] }}
+                className="w-2 h-2 flex-shrink-0"
+                style={{
+                  display: "inline-block",
+                  background: categoryColors[skill.category],
+                  boxShadow: `0 0 6px ${categoryColors[skill.category]}`,
+                }}
               />
               {skill.name}
             </div>

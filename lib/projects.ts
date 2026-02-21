@@ -31,6 +31,7 @@ export const projects: Project[] = [
             "Cross-platform app running on iOS and Android with 60fps performance. Reduced development cost by 40% compared to native dual-platform development.",
         image: "/images/placeholder.svg",
         github: "https://github.com/Anvarkangadiyil",
+        demo: "https://ideafy-nine.vercel.app/",
         featured: true,
     },
     {

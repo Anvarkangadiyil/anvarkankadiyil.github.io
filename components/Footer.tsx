@@ -1,44 +1,135 @@
+"use client";
+
 import { siteConfig, navLinks } from "@/lib/constants";
+
+const SOCIAL = [
+  { label: "GitHub", href: siteConfig.links.github },
+  { label: "LinkedIn", href: siteConfig.links.linkedin },
+  { label: "Medium", href: siteConfig.links.medium },
+  { label: "Instagram", href: siteConfig.links.instagram },
+  { label: siteConfig.email, href: `mailto:${siteConfig.email}` },
+];
+
+const px = (
+  size = "0.55rem",
+  color = "var(--neon-cyan)",
+): React.CSSProperties => ({
+  fontFamily: "var(--font-press-start), monospace",
+  fontSize: size,
+  color,
+  letterSpacing: "0.06em",
+});
+
+const vt = (color = "var(--text-secondary)"): React.CSSProperties => ({
+  fontFamily: "var(--font-vt323), monospace",
+  fontSize: "1.1rem",
+  color,
+  letterSpacing: "0.04em",
+  textTransform: "uppercase" as const,
+  textDecoration: "none",
+});
 
 export default function Footer() {
   return (
-    <footer className="border-t-[4px] border-[var(--neon-green)] bg-[var(--bg-primary)] mt-16 ">
-      <div className="max-w-[1200px] mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+    <footer
+      style={{
+        background: "var(--bg-primary)",
+        borderTop: "4px solid var(--neon-green)",
+        marginTop: "4rem",
+      }}
+    >
+      {/* Pixel ticker strip */}
+      <div
+        style={{
+          height: 6,
+          background:
+            "repeating-linear-gradient(90deg, var(--neon-green) 0 12px, var(--neon-cyan) 12px 24px, var(--neon-purple) 24px 36px, #000 36px 48px)",
+          opacity: 0.6,
+        }}
+      />
+
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "3.5rem 1.5rem 2rem",
+        }}
+      >
+        {/* 3-col grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "2.5rem",
+            marginBottom: "2.5rem",
+          }}
+        >
           {/* Brand */}
-          <div>
-            <a
-              href="#home"
-              className="text-xl font-bold text-[var(--neon-green)] uppercase"
-              style={{ fontFamily: "var(--font-press-start)" }}
-            >
-              &gt; {siteConfig.name.split(" ")[0]}
-              <span className="text-[var(--neon-cyan)]">_</span>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            <a href="#home" style={{ textDecoration: "none" }}>
+              <span style={{ ...px("0.85rem", "var(--neon-green)") }}>
+                &gt; {siteConfig.name.split(" ")[0]}
+              </span>
+              <span style={{ ...px("0.85rem", "var(--neon-cyan)") }}>_</span>
             </a>
-            <p
-              className="text-[var(--text-secondary)] mt-4 text-sm leading-relaxed uppercase"
-              style={{ fontFamily: "var(--font-vt323)" }}
-            >
-              &gt; Crafting scalable digital experiences. Always learning.
+            <p style={{ ...vt(), lineHeight: 1.7, fontSize: "1rem" }}>
+              &gt; Crafting scalable digital experiences.{" "}
+              <span style={{ color: "var(--neon-green)" }}>
+                Always learning.
+              </span>{" "}
               Always building.
             </p>
+
+            {/* Status indicator */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                marginTop: 4,
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 8,
+                  height: 8,
+                  background: "var(--neon-green)",
+                  boxShadow: "0 0 8px var(--neon-green)",
+                  animation: "pulse 2s steps(1) infinite",
+                }}
+              />
+              <span style={{ ...px("0.45rem", "var(--neon-green)") }}>
+                SYS ONLINE
+              </span>
+            </div>
           </div>
 
-          {/* Links */}
+          {/* Navigation */}
           <div>
-            <h3
-              className="text-sm font-semibold text-[var(--neon-cyan)] tracking-wider uppercase mb-4"
-              style={{ fontFamily: "var(--font-press-start)" }}
+            <h3 style={{ ...px("0.5rem"), marginBottom: "1rem" }}>[ NAV ]</h3>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.6rem",
+              }}
             >
-              [ Navigation ]
-            </h3>
-            <ul className="space-y-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-lg uppercase text-[var(--text-primary)] hover:text-[var(--neon-green)] transition-colors"
-                    style={{ fontFamily: "var(--font-vt323)" }}
+                    style={vt("var(--text-primary)")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "var(--neon-green)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "var(--text-primary)")
+                    }
                   >
                     &gt; {link.label}
                   </a>
@@ -47,82 +138,70 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Social */}
+          {/* Connect */}
           <div>
-            <h3
-              className="text-sm font-semibold text-[var(--neon-cyan)] tracking-wider uppercase mb-4"
-              style={{ fontFamily: "var(--font-press-start)" }}
-            >
-              [ Connect ]
+            <h3 style={{ ...px("0.5rem"), marginBottom: "1rem" }}>
+              [ CONNECT ]
             </h3>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href={siteConfig.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg uppercase text-[var(--text-primary)] hover:text-[var(--neon-green)] transition-colors"
-                  style={{ fontFamily: "var(--font-vt323)" }}
-                >
-                  &gt; GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href={siteConfig.links.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg uppercase text-[var(--text-primary)] hover:text-[var(--neon-green)] transition-colors"
-                  style={{ fontFamily: "var(--font-vt323)" }}
-                >
-                  &gt; LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  href={siteConfig.links.medium}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg uppercase text-[var(--text-primary)] hover:text-[var(--neon-green)] transition-colors"
-                  style={{ fontFamily: "var(--font-vt323)" }}
-                >
-                  &gt; Medium
-                </a>
-              </li>
-              <li>
-                <a
-                  href={siteConfig.links.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg uppercase text-[var(--text-primary)] hover:text-[var(--neon-green)] transition-colors"
-                  style={{ fontFamily: "var(--font-vt323)" }}
-                >
-                  &gt; Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="text-lg uppercase text-[var(--text-primary)] hover:text-[var(--neon-green)] transition-colors"
-                  style={{ fontFamily: "var(--font-vt323)" }}
-                >
-                  &gt; {siteConfig.email}
-                </a>
-              </li>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.6rem",
+              }}
+            >
+              {SOCIAL.map(({ label, href }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    target={href.startsWith("mailto") ? undefined : "_blank"}
+                    rel="noopener noreferrer"
+                    style={vt("var(--text-primary)")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "var(--neon-cyan)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "var(--text-primary)")
+                    }
+                  >
+                    &gt; {label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="border-t-[4px] border-[var(--neon-purple)] pt-8 text-center w-full">
-          <p
-            className="text-lg uppercase text-[var(--text-secondary)]"
-            style={{ fontFamily: "var(--font-vt323)" }}
-          >
-            [ SYSTEM RUNNING OK ] :: © {new Date().getFullYear()}{" "}
-            {siteConfig.name}. All rights reserved.
-          </p>
+        {/* Bottom bar */}
+        <div
+          style={{
+            borderTop: "3px solid transparent",
+            borderImage:
+              "repeating-linear-gradient(90deg, var(--neon-purple) 0 6px, transparent 6px 12px) 1",
+            paddingTop: "1.5rem",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.75rem",
+          }}
+        >
+          <span style={{ ...vt("var(--text-secondary)"), fontSize: "1rem" }}>
+            © {new Date().getFullYear()} {siteConfig.name}
+          </span>
+          <span style={{ ...px("0.45rem", "var(--neon-purple)") }}>
+            [ SYSTEM RUNNING OK ]
+          </span>
         </div>
+
+        <style>{`
+          @keyframes pulse {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.2; }
+          }
+        `}</style>
       </div>
     </footer>
   );

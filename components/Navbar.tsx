@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { navLinks, siteConfig } from "@/lib/constants";
 
 export default function Navbar() {
@@ -9,96 +9,119 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-[1000] ${
         scrolled ? "nav-glass" : "bg-transparent"
       }`}
     >
-      <nav className="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between w-full">
         {/* Logo */}
         <a
           href="#home"
-          className="text-xl font-bold tracking-tight gradient-text"
+          style={{
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+          }}
         >
-          {siteConfig.name.split(" ")[0]}
-          <span className="text-white">.dev</span>
+          <span
+            className="gradient-text"
+            style={{ fontSize: "1.2rem", lineHeight: "1" }}
+          >
+            {siteConfig.name.split(" ")[0]}
+          </span>
+          <span
+            style={{
+              color: "var(--neon-green)",
+              fontFamily: "var(--font-press-start), monospace",
+              fontSize: "0.8rem",
+              lineHeight: "1",
+              marginTop: "4px",
+            }}
+          >
+            .dev
+          </span>
         </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="nav-link">
-              {link.label}
-            </a>
-          ))}
+          <div className="flex items-center gap-8" style={{ marginTop: "2px" }}>
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="nav-link">
+                {link.label}
+              </a>
+            ))}
+          </div>
           <a
             href={siteConfig.links.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="magnetic-btn magnetic-btn-primary text-sm !py-2 !px-5"
+            className="magnetic-btn magnetic-btn-primary"
           >
-            Resume
+            ▶ Resume
           </a>
         </div>
 
         {/* Mobile Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden flex flex-col gap-1.5 z-[1001]"
+          className="md:hidden"
           aria-label="Toggle menu"
+          style={{ background: "none", border: "none", cursor: "none" }}
         >
-          <motion.span
-            animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-            className="block w-6 h-0.5 bg-white"
-          />
-          <motion.span
-            animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-            className="block w-6 h-0.5 bg-white"
-          />
-          <motion.span
-            animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-            className="block w-6 h-0.5 bg-white"
-          />
+          <span
+            style={{
+              fontFamily: "var(--font-press-start), monospace",
+              fontSize: "0.8rem",
+              color: "var(--neon-green)",
+            }}
+          >
+            {isOpen ? "✕" : "▰▰▰"}
+          </span>
         </button>
+      </nav>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, x: "100%" }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "100%" }}
-              transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="fixed inset-0 bg-[var(--bg-primary)] z-[999] flex flex-col items-center justify-center gap-8"
-            >
-              {navLinks.map((link, i) => (
-                <motion.a
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15 }}
+            className="md:hidden border-t-4 border-[var(--neon-purple)]"
+            style={{ background: "#000" }}
+          >
+            <div className="flex flex-col px-6 py-6 gap-6">
+              {navLinks.map((link) => (
+                <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="text-2xl font-semibold text-white hover:text-[var(--neon-cyan)] transition-colors"
+                  className="nav-link text-lg"
                 >
                   {link.label}
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </motion.header>
+              <a
+                href={siteConfig.links.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="magnetic-btn magnetic-btn-primary self-start"
+              >
+                ▶ Resume
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
