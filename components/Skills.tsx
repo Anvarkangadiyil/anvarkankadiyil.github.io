@@ -89,11 +89,19 @@ export default function Skills() {
     <section id="skills" ref={sectionRef} className="relative">
       <div className="section-container">
         {/* Header */}
-        <div className="mb-10">
-          <h2 className="section-heading reveal-up">
+        <div className="flex justify-center items-center flex-col">
+          <h2 className="section-heading">
             &gt; SKILLS &amp; <span className="gradient-text">TECH</span>_
           </h2>
-          <p className="section-subheading reveal-up">[ HOVER TO INTERACT ]</p>
+          <p
+            className="section-subheading mx-auto text-center"
+            style={{
+              marginBottom: "2.5rem",
+              textAlign: "center",
+            }}
+          >
+            [ HOVER TO INTERACT ]
+          </p>
         </div>
 
         {/* Skill Cloud */}

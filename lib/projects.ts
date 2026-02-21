@@ -17,107 +17,89 @@ export interface Project {
 
 export const projects: Project[] = [
     {
-        slug: "flutter-ecommerce-app",
-        title: "E-Commerce Mobile App",
+        slug: "axiom-ai-code-editor",
+        title: "Axiom — AI Code Editor",
         description:
-            "A full-featured cross-platform e-commerce application built with Flutter and Firebase, offering seamless shopping experiences with real-time updates.",
-        category: ["mobile", "fullstack"],
-        techStack: ["Flutter", "Dart", "Firebase", "Firestore", "Cloud Functions"],
+            "An AI-powered code editor inspired by Cursor and Antigravity, built to enhance developer productivity with real-time AI assistance.",
+        category: ["ai", "fullstack"],
+        techStack: [
+            "Next.js",
+            "TypeScript",
+            "Convex",
+            "AI SDK",
+            "Monaco Editor",
+            "Tailwind CSS"
+        ],
         problem:
-            "Small businesses needed an affordable, cross-platform mobile storefront with real-time inventory management.",
+            "Developers switch between multiple tools for coding and AI assistance, breaking workflow efficiency.",
         solution:
-            "Built a performant Flutter app with Firebase backend, featuring real-time product updates, secure payment processing, and push notifications.",
+            "Built an AI-native code editor integrating real-time code generation, inline suggestions, and conversational debugging directly inside the editor.",
         results:
-            "Cross-platform app running on iOS and Android with 60fps performance. Reduced development cost by 40% compared to native dual-platform development.",
+            "Unified coding + AI workflow, reducing context switching and improving development speed.",
         image: "/images/placeholder.svg",
-        github: "https://github.com/Anvarkangadiyil",
+        github: "https://github.com/Anvarkangadiyil/axiom",
+        demo: undefined,
+        featured: true,
+    },
+
+    {
+        slug: "file-explorer-rust",
+        title: "Tubo File Explorer",
+        description:
+            "A high-performance file explorer built with Rust and Tauri, optimized for faster file search and navigation than native explorers.",
+        category: ["opensource"],
+        techStack: ["Rust", "Tauri", "TypeScript", "Node.js"],
+        problem:
+            "Default OS file explorers struggle with performance and fast indexing for large file systems.",
+        solution:
+            "Developed a Rust-powered desktop file explorer with efficient search indexing and lightweight UI.",
+        results:
+            "Significantly improved search speed and performance compared to traditional explorers.",
+        image: "/images/placeholder.svg",
+        github: "https://github.com/Anvarkangadiyil/file-explorer-rust",
+        featured: false,
+    },
+
+    {
+        slug: "2048-terminal-game",
+        title: "2048 Terminal Game",
+        description:
+            "A terminal-based clone of the popular 2048 puzzle game implemented in Rust.",
+        category: ["opensource"],
+        techStack: ["Rust"],
+        problem:
+            "Recreating classic games in system-level languages is useful for mastering memory safety and performance.",
+        solution:
+            "Implemented full game mechanics including tile merging, movement logic, and score tracking in a CLI environment.",
+        results:
+            "Fully playable terminal game showcasing Rust systems programming skills.",
+        image: "/images/placeholder.svg",
+        github: "https://github.com/Anvarkangadiyil/2048-game",
+        featured: false,
+    },
+
+    {
+        slug: "ideafy-startup-platform",
+        title: "Ideafy — Startup Idea Platform",
+        description:
+            "A platform where founders can share, validate, and explore startup ideas publicly.",
+        category: ["fullstack"],
+        techStack: [
+            "Next.js",
+            "TypeScript",
+            "Sanity CMS",
+            "Tailwind CSS",
+            "Vercel"
+        ],
+        problem:
+            "Early-stage founders lack a simple platform to showcase and validate startup ideas.",
+        solution:
+            "Built a full-stack idea sharing platform with CMS integration and public idea listings.",
+        results:
+            "Live production deployment enabling founders to pitch and discover startup concepts.",
+        image: "/images/placeholder.svg",
+        github: "https://github.com/Anvarkangadiyil/ideafy",
         demo: "https://ideafy-nine.vercel.app/",
         featured: true,
-    },
-    {
-        slug: "rust-cli-toolkit",
-        title: "Rust CLI Toolkit",
-        description:
-            "A collection of high-performance command-line tools built in Rust for file processing, data transformation, and system automation.",
-        category: ["opensource"],
-        techStack: ["Rust", "Clap", "Serde", "Tokio"],
-        problem:
-            "Common developer workflows required multiple disparate tools with inconsistent interfaces and poor performance on large datasets.",
-        solution:
-            "Created a unified CLI toolkit in Rust leveraging zero-cost abstractions and fearless concurrency for blazing-fast file processing.",
-        results:
-            "10x faster than equivalent Python scripts. Open-sourced with community contributions.",
-        image: "/images/placeholder.svg",
-        github: "https://github.com/Anvarkangadiyil",
-        featured: true,
-    },
-    {
-        slug: "ai-chat-assistant",
-        title: "AI Chat Assistant",
-        description:
-            "An intelligent conversational AI assistant powered by modern LLMs with a beautiful React frontend and Node.js backend.",
-        category: ["ai", "fullstack"],
-        techStack: ["React", "Node.js", "OpenAI API", "WebSockets", "MongoDB"],
-        problem:
-            "Organizations needed a customizable AI chat interface that could be tailored to their specific domain knowledge.",
-        solution:
-            "Developed a full-stack AI chat platform with streaming responses, conversation history, and domain-specific fine-tuning capabilities.",
-        results:
-            "Handles 1000+ concurrent conversations. Deployed across 3 organizations with custom knowledge bases.",
-        image: "/images/placeholder.svg",
-        github: "https://github.com/Anvarkangadiyil",
-        featured: true,
-    },
-    {
-        slug: "portfolio-website-v2",
-        title: "3D Portfolio Website",
-        description:
-            "This very website — a modern, award-winning portfolio built with Next.js, Three.js, and GSAP featuring immersive 3D experiences.",
-        category: ["fullstack", "opensource"],
-        techStack: ["Next.js", "Three.js", "GSAP", "Tailwind CSS", "TypeScript"],
-        problem:
-            "Traditional portfolio websites feel generic and fail to showcase creative technical capabilities.",
-        solution:
-            "Built an immersive 3D portfolio with interactive WebGL visuals, smooth scroll animations, and premium glassmorphism design.",
-        results:
-            "Lighthouse score 95+. Featured with Awwwards-level design polish and fully responsive 3D experience.",
-        image: "/images/placeholder.svg",
-        github: "https://github.com/Anvarkangadiyil/anvarkankadiyil.github.io",
-        demo: "https://anvarkankadiyil.github.io",
-        featured: true,
-    },
-    {
-        slug: "react-native-fitness",
-        title: "Fitness Tracker App",
-        description:
-            "A React Native fitness tracking application with workout logging, progress visualization, and social features.",
-        category: ["mobile"],
-        techStack: ["React Native", "TypeScript", "Redux", "Firebase", "Charts"],
-        problem:
-            "Fitness enthusiasts needed a simple yet powerful way to track workouts and visualize their progress over time.",
-        solution:
-            "Built a React Native app with intuitive workout logging, interactive charts for progress tracking, and social features for motivation.",
-        results:
-            "Smooth 60fps animations on both platforms. Interactive data visualizations for workout history.",
-        image: "/images/placeholder.svg",
-        github: "https://github.com/Anvarkangadiyil",
-        featured: false,
-    },
-    {
-        slug: "fullstack-blog-platform",
-        title: "Blog Platform",
-        description:
-            "A modern full-stack blog platform with MDX support, syntax highlighting, and a custom CMS built with Next.js.",
-        category: ["fullstack", "opensource"],
-        techStack: ["Next.js", "MDX", "Prisma", "PostgreSQL", "Tailwind CSS"],
-        problem:
-            "Developers needed a self-hosted blog platform that supports rich content with code snippets and interactive components.",
-        solution:
-            "Created a Next.js-based blog platform with MDX for rich content, Prisma ORM for data management, and a custom admin dashboard.",
-        results:
-            "Fast static generation with ISR. SEO-optimized with perfect Lighthouse scores for content pages.",
-        image: "/images/placeholder.svg",
-        github: "https://github.com/Anvarkangadiyil",
-        featured: false,
     },
 ];
