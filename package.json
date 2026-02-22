@@ -11,8 +11,8 @@
   "dependencies": {
     "@fontsource/press-start-2p": "^5.2.7",
     "@fontsource/vt323": "^5.2.7",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.5.0",
+    "@react-three/drei": "^9.106.0",
+    "@react-three/fiber": "^8.16.8",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.34.2",
     "gsap": "^3.14.2",
