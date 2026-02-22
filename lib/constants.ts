@@ -3,7 +3,7 @@ export const siteConfig = {
   title: "Anvar Kangadiyil | Software Developer",
   description:
     "Anvar Kangadiyil - Software Developer specializing in Flutter, Next.js, Full Stack Development, Rust, and AI. Crafting scalable digital experiences.",
-  url: "https://anvarkankadiyil.github.io",
+  url: "https://anvarkangadiyil.in",
   ogImage: "/images/anvar.jpg",
   links: {
     github: "https://github.com/Anvarkangadiyil",
