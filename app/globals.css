@@ -25,7 +25,8 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--bg-primary);
+  /* Hard-coded fallback so there's NEVER a white flash before CSS vars load */
+  background: #050505;
 }
 
 body {
@@ -55,6 +56,11 @@ body {
 }
 
 /* ===== CRT Scanline Overlay ===== */
+/*
+  FIX: Was using rgba(255,255,255,0) which flashes white on first paint.
+  Changed to dark-only scanlines — transparent black alternating with
+  slightly darker black. This looks correct on both dark AND light bg.
+*/
 .grain-overlay {
   position: fixed;
   top: 0;
@@ -63,14 +69,13 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  background: linear-gradient(
+  background: repeating-linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0) 50%,
-    rgba(0, 0, 0, 0.25) 50%,
-    rgba(0, 0, 0, 0.25)
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
   );
-  background-size: 100% 4px;
 }
 
 /* ===== Retro Windows (Replacing Glass) ===== */
@@ -142,7 +147,6 @@ body {
 }
 
 /* ===== Custom Cursor ===== */
-
 .custom-cursor {
   position: fixed;
   top: 0;
@@ -158,7 +162,6 @@ body {
   filter: drop-shadow(4px 4px 0px #000);
 }
 
-
 @media (pointer: fine) {
   .custom-cursor {
     display: block;
@@ -168,7 +171,6 @@ body {
     cursor: none !important;
   }
 }
-
 
 /* ===== Retro Buttons ===== */
 .magnetic-btn {
@@ -325,10 +327,9 @@ body {
 /* ===== Timeline ===== */
 .timeline {
   position: relative;
-  padding-left: 48px; /* more room for the marker */
+  padding-left: 48px;
 }
 
-/* Vertical pixel line */
 .timeline::before {
   content: "";
   position: absolute;
@@ -350,11 +351,10 @@ body {
   padding-bottom: 48px;
 }
 
-/* Square pixel marker — sits on the line, never overlaps text */
 .timeline-item::before {
   content: "";
   position: absolute;
-  left: -56px;        /* pull it back to sit ON the line: -(padding-left + half-marker) */
+  left: -56px;
   top: 2px;
   width: 16px;
   height: 16px;
@@ -363,17 +363,15 @@ body {
   box-shadow: 0 0 0 2px #000, 0 0 8px var(--neon-cyan);
 }
 
-/* Active / current item — filled marker */
 .timeline-item.active::before {
   background: var(--neon-cyan);
   box-shadow: 0 0 0 2px #000, 0 0 12px var(--neon-cyan);
 }
 
-/* Connector dot between marker and content */
 .timeline-item::after {
   content: "";
   position: absolute;
-  left: -36px;        /* between marker and content */
+  left: -36px;
   top: 9px;
   width: 28px;
   height: 2px;
@@ -386,6 +384,7 @@ body {
   );
   opacity: 0.5;
 }
+
 /* ===== Category Filter ===== */
 .filter-btn {
   padding: 12px 24px;
@@ -425,10 +424,9 @@ body {
 .nav-link {
   color: #fff;
   font-family: var(--font-press-start), monospace;
-  font-size: 0.8rem; /* Adjusted for better alignment */
+  font-size: 0.8rem;
   text-transform: uppercase;
   text-decoration: none;
-  /* Removed padding so bounding box matches text precisely */
   line-height: 1;
 }
 
@@ -440,13 +438,17 @@ body {
   display: none !important;
 }
 
-/* ===== Content Boxes ===== */
+/* ===== Hero Content Box ===== */
+/*
+  FIX: Removed margin-top: 4rem — it was pushing the box down and
+  causing a visible gap/flash between the section top and content
+  on first load, especially while the canvas was hydrating.
+*/
 .hero-content {
   background: #000;
   border: 4px solid var(--neon-cyan);
   padding: 2rem;
   box-shadow: 12px 12px 0px var(--neon-purple);
-  margin-top: 4rem;
 }
 
 /* Fix text for typography layout */

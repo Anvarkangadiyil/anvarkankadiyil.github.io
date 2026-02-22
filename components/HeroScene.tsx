@@ -7,8 +7,11 @@ import * as THREE from "three";
 
 function RetroCube() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const wireRef = useRef<THREE.LineSegments>(null);
-  const { pointer } = useThree();
+  const wireRef = useRef<THREE.Mesh>(null);
+  const { pointer, viewport } = useThree();
+
+  // Scale cube based on viewport width (smaller on mobile)
+  const scale = Math.min(1, viewport.width / 6);
 
   useFrame((state) => {
     if (meshRef.current && wireRef.current) {
@@ -19,10 +22,10 @@ function RetroCube() {
       wireRef.current.rotation.x = rotX;
       wireRef.current.rotation.y = rotY;
 
-      // Mouse parallax
-      const targetX = pointer.x * 1.5;
-      const targetY = pointer.y * 1.5;
-
+      // Mouse parallax — reduce effect on small screens
+      const parallaxStrength = Math.min(1.5, viewport.width / 4);
+      const targetX = pointer.x * parallaxStrength;
+      const targetY = pointer.y * parallaxStrength;
       meshRef.current.position.x = THREE.MathUtils.lerp(
         meshRef.current.position.x,
         targetX,
@@ -39,23 +42,33 @@ function RetroCube() {
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={2}>
+    <Float speed={1.4} rotationIntensity={0} floatIntensity={0.5}>
       {/* Solid inner cube */}
-      <mesh ref={meshRef} scale={1.8}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshBasicMaterial color="#000000" />
+      <mesh ref={meshRef} scale={scale}>
+        <boxGeometry args={[1.5, 1.5, 1.5]} />
+        <meshStandardMaterial
+          color="#00ffff"
+          emissive="#00ffff"
+          emissiveIntensity={0.2}
+          transparent
+          opacity={0.15}
+        />
       </mesh>
       {/* Wireframe outer edge */}
-      <lineSegments ref={wireRef} scale={1.8}>
-        <edgesGeometry args={[new THREE.BoxGeometry(1, 1, 1)]} />
-        <lineBasicMaterial color="#39ff14" linewidth={2} />
-      </lineSegments>
+      <mesh ref={wireRef} scale={scale}>
+        <boxGeometry args={[1.52, 1.52, 1.52]} />
+        <meshBasicMaterial color="#00ffff" wireframe />
+      </mesh>
     </Float>
   );
 }
 
 function FloatingPixels() {
-  const count = 150;
+  const { viewport } = useThree();
+
+  // Use a fixed count to prevent React Three Fiber buffer attribute errors on window resize
+  const count = 100;
+
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -64,10 +77,9 @@ function FloatingPixels() {
       pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
     }
     return pos;
-  }, []);
+  }, [count]);
 
   const ref = useRef<THREE.Points>(null);
-
   useFrame((state) => {
     if (ref.current) {
       ref.current.rotation.y = state.clock.elapsedTime * 0.05;
@@ -76,36 +88,32 @@ function FloatingPixels() {
   });
 
   // Use a square texture for points to make them look like pixels
-  const canvas = document.createElement("canvas");
-  canvas.width = 16;
-  canvas.height = 16;
-  const context = canvas.getContext("2d");
-  if (context) {
-    context.fillStyle = "#ffffff";
-    context.fillRect(0, 0, 16, 16);
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.magFilter = THREE.NearestFilter;
+  const texture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 16;
+    canvas.height = 16;
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, 16, 16);
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.magFilter = THREE.NearestFilter;
+    return tex;
+  }, []);
 
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
-        color="#0ff"
+        size={0.05}
+        color="#39ff14"
         map={texture}
         transparent
-        opacity={0.8}
+        opacity={0.6}
         sizeAttenuation
-        depthWrite={false}
       />
     </points>
   );
@@ -114,7 +122,9 @@ function FloatingPixels() {
 function Scene() {
   return (
     <>
-      <ambientLight intensity={1} />
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
+      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#39ff14" />
       <RetroCube />
       <FloatingPixels />
     </>
@@ -123,11 +133,21 @@ function Scene() {
 
 export default function HeroScene() {
   return (
-    <div className="canvas-container">
+    <div
+      className="canvas-container absolute inset-0 w-full h-full"
+      style={{ touchAction: "none" }}
+    >
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 45 }}
-        dpr={[1, 1]}
-        gl={{ antialias: false, alpha: true }} // Disabling antialias helps with the retro look
+        camera={{ position: [0, 0, 5], fov: 75 }}
+        style={{ width: "100%", height: "100%" }}
+        gl={{ antialias: true, alpha: true }}
+        dpr={[
+          1,
+          Math.min(
+            2,
+            typeof window !== "undefined" ? window.devicePixelRatio : 2,
+          ),
+        ]}
       >
         <Scene />
       </Canvas>

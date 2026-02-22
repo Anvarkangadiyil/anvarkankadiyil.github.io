@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Anvar Kangadiyil",
   title: "Anvar Kangadiyil | Software Developer",
   description:
-    "Anvar Kangadiyil - Software Developer specializing in Flutter, React Native, Full Stack Development, Rust, and AI. Crafting scalable digital experiences.",
+    "Anvar Kangadiyil - Software Developer specializing in Flutter, Next.js, Full Stack Development, Rust, and AI. Crafting scalable digital experiences.",
   url: "https://anvarkankadiyil.github.io",
   ogImage: "/images/anvar.jpg",
   links: {
@@ -11,7 +11,7 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/_codingfreak/",
     medium: "https://medium.com/@anvarkangadiyil",
     resume:
-      "https://drive.google.com/file/d/1ZvDyLfU8Brk7CNshbX419nlbzFxuan2m/view?usp=download",
+      "https://drive.google.com/file/d/18psb28NKCIau7XZt7c8-NKRK5aSyRxtd/view?usp=sharing",
   },
   email: "anvarkangadiyil@gmail.com",
   contactFormEndpoint:

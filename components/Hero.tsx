@@ -5,128 +5,207 @@ import dynamic from "next/dynamic";
 import { siteConfig } from "@/lib/constants";
 import MagneticButton from "./MagneticButton";
 
+// ─── Lazy-load 3D scene (client-only) ────────────────────────────────────────
+
 const HeroScene = dynamic(() => import("./HeroScene"), {
   ssr: false,
   loading: () => <div className="canvas-container bg-[var(--bg-primary)]" />,
 });
 
-export default function Hero() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
+// ─── Constants ────────────────────────────────────────────────────────────────
 
+const SOCIAL_LINKS = [
+  { href: siteConfig.links.github, icon: "github", label: "GitHub" },
+  { href: siteConfig.links.linkedin, icon: "linkedin", label: "LinkedIn" },
+  { href: siteConfig.links.medium, icon: "medium", label: "Medium" },
+  { href: siteConfig.links.instagram, icon: "instagram", label: "Instagram" },
+] as const;
+
+const CTA_BUTTONS = [
+  {
+    href: "#projects",
+    label: "[ VIEW PROJECTS ]",
+    className: "magnetic-btn-primary",
+  },
+  {
+    href: "#contact",
+    label: "[ CONTACT ME ]",
+    className: "magnetic-btn-secondary",
+  },
+] as const;
+
+// ─── Custom hook: entrance animation ─────────────────────────────────────────
+
+function useHeroAnimation(refs: {
+  heading: React.RefObject<HTMLElement | null>;
+  sub: React.RefObject<HTMLElement | null>;
+  cta: React.RefObject<HTMLElement | null>;
+  social: React.RefObject<HTMLElement | null>;
+}) {
   useEffect(() => {
-    const loadGSAP = async () => {
+    const animate = async () => {
       const gsap = (await import("gsap")).default;
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(
-        headingRef.current,
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 1.6 },
-      )
+
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
         .fromTo(
-          subRef.current,
+          refs.heading.current,
+          { y: 80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, delay: 1.6 },
+        )
+        .fromTo(
+          refs.sub.current,
           { y: 40, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.8 },
           "-=0.4",
         )
         .fromTo(
-          ctaRef.current,
+          refs.cta.current,
           { y: 30, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.8 },
           "-=0.3",
+        )
+        .fromTo(
+          refs.social.current,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6 },
+          "-=0.4",
         );
     };
-    loadGSAP();
+
+    animate();
   }, []);
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function HeroBadge({ ref }: { ref: React.Ref<HTMLParagraphElement> }) {
+  return (
+    <p
+      ref={ref}
+      className="text-[var(--neon-green)] text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6"
+      style={{ opacity: 0 }}
+    >
+      [ PLAYER 1 READY ] :: SOFTWARE DEVELOPER
+    </p>
+  );
+}
+
+function HeroHeading({ ref }: { ref: React.Ref<HTMLHeadingElement> }) {
+  return (
+    <h1
+      ref={ref}
+      className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl uppercase tracking-tight mb-6 sm:mb-8 leading-tight"
+      style={{ opacity: 0 }}
+    >
+      <span className="text-[var(--neon-cyan)]">&gt;</span> CRAFTING SCALABLE
+      <br />
+      <span className="gradient-text">DIGITAL EXPERIENCES</span>
+      <span className="text-[var(--neon-cyan)] animate-pulse">_</span>
+    </h1>
+  );
+}
+
+function HeroCTA({ ref }: { ref: React.Ref<HTMLDivElement> }) {
+  return (
+    <div
+      ref={ref}
+      className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-8 sm:mt-12"
+      style={{ opacity: 0 }}
+    >
+      {CTA_BUTTONS.map(({ href, label, className }) => (
+        <MagneticButton
+          key={href}
+          href={href}
+          className={`${className} w-full sm:w-auto`}
+        >
+          {label}
+        </MagneticButton>
+      ))}
+    </div>
+  );
+}
+
+function HeroSocials({ ref }: { ref: React.Ref<HTMLDivElement> }) {
+  return (
+    <div
+      ref={ref}
+      className="flex items-center justify-center gap-4 sm:gap-6"
+      style={{ opacity: 0 }}
+    >
+      {SOCIAL_LINKS.map(({ href, icon, label }) => (
+        <a
+          key={icon}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={label}
+          className="text-[var(--neon-green)] hover:text-[var(--neon-cyan)] transition-colors touch-manipulation p-1"
+        >
+          <SocialIcon name={icon} />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function ScrollIndicator() {
+  return (
+    <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span
+        className="text-[var(--neon-cyan)] text-[8px] sm:text-xs tracking-widest uppercase animate-pulse"
+        style={{ fontFamily: "var(--font-press-start)" }}
+      >
+        INSERT COIN TO SCROLL ↓
+      </span>
+    </div>
+  );
+}
+
+// ─── Root component ───────────────────────────────────────────────────────────
+
+export default function Hero() {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const socialRef = useRef<HTMLDivElement>(null);
+
+  useHeroAnimation({
+    heading: headingRef,
+    sub: subRef,
+    cta: ctaRef,
+    social: socialRef,
+  });
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
+      {/* Background 3D canvas */}
       <HeroScene />
 
-      <div className="hero-content text-center px-6 max-w-4xl mx-auto">
-        <p
-          className="text-[var(--neon-green)] text-sm md:text-md uppercase tracking-[0.2em] mb-6 opacity-0"
-          ref={subRef}
-          style={{ opacity: 0 }}
-        >
-          [ PLAYER 1 READY ] :: SOFTWARE DEVELOPER
-        </p>
-
-        <h1
-          ref={headingRef}
-          className="text-3xl md:text-5xl lg:text-6xl uppercase tracking-tight mb-8"
-          style={{ opacity: 0 }}
-        >
-          <span className="text-[var(--neon-cyan)]">&gt;</span> CRAFTING
-          SCALABLE
-          <br />
-          <span className="gradient-text">DIGITAL EXPERIENCES</span>
-          <span className="text-[var(--neon-cyan)] animate-pulse">_</span>
-        </h1>
+      {/* Foreground content */}
+      <div className="hero-content text-center px-4 sm:px-6 max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto w-full ">
+        <HeroBadge ref={subRef} />
+        <HeroHeading ref={headingRef} />
+        <HeroCTA ref={ctaRef} />
 
         <div
-          ref={ctaRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12"
-          style={{ opacity: 0 }}
+          style={{
+            marginTop: "2rem",
+          }}
         >
-          <MagneticButton href="#projects" className="magnetic-btn-primary">
-            [ VIEW PROJECTS ]
-          </MagneticButton>
-          <MagneticButton href="#contact" className="magnetic-btn-secondary">
-            [ CONTACT ME ]
-          </MagneticButton>
-        </div>
-
-        {/* Social Links */}
-        <div
-          className="flex items-center justify-center gap-6 mt-12 opacity-0"
-          ref={ctaRef}
-          style={{ opacity: 1 }}
-        >
-          {[
-            { href: siteConfig.links.github, icon: "github", label: "GitHub" },
-            {
-              href: siteConfig.links.linkedin,
-              icon: "linkedin",
-              label: "LinkedIn",
-            },
-            { href: siteConfig.links.medium, icon: "medium", label: "Medium" },
-            {
-              href: siteConfig.links.instagram,
-              icon: "instagram",
-              label: "Instagram",
-            },
-          ].map((social) => (
-            <a
-              key={social.icon}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.label}
-              className="text-[var(--neon-green)] hover:text-[var(--neon-cyan)] transition-colors text-xl"
-            >
-              <SocialIcon name={social.icon} />
-            </a>
-          ))}
+          <HeroSocials ref={socialRef} />
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <span
-          className="text-[var(--neon-cyan)] text-xs tracking-widest uppercase animate-pulse"
-          style={{ fontFamily: "var(--font-press-start)" }}
-        >
-          INSERT COIN TO SCROLL ↓
-        </span>
-      </div>
+      <ScrollIndicator />
     </section>
   );
 }
+
+// ─── Social icon map ──────────────────────────────────────────────────────────
 
 function SocialIcon({ name }: { name: string }): JSX.Element | null {
   const icons: Record<string, JSX.Element> = {
@@ -151,5 +230,6 @@ function SocialIcon({ name }: { name: string }): JSX.Element | null {
       </svg>
     ),
   };
-  return icons[name] || null;
+
+  return icons[name] ?? null;
 }

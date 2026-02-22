@@ -1,46 +1,7 @@
 "use client";
 
+import { STACK, STATS, TIMELINE } from "@/lib/experience";
 import { useEffect, useRef } from "react";
-
-const TIMELINE = [
-  {
-    title: "Software Developer",
-    sub: "Freelance",
-    period: "2023 — Present",
-    desc: "Building cross-platform mobile apps and full-stack web applications for clients worldwide.",
-    color: "var(--neon-cyan)",
-    index: "01",
-  },
-  {
-    title: "B.Sc. Computer Science",
-    sub: "Calicut University",
-    period: "2020 — 2023",
-    desc: "Focused on algorithms, data structures, and software engineering principles.",
-    color: "var(--neon-purple)",
-    index: "02",
-  },
-  {
-    title: "Open Source Contributor",
-    sub: "GitHub",
-    period: "2022 — Present",
-    desc: "Contributing to Flutter packages, Rust libraries, and web development tools.",
-    color: "var(--neon-green)",
-    index: "03",
-  },
-];
-
-const STATS = [
-  { val: "3+", label: "YRS EXP" },
-  { val: "20+", label: "PROJECTS" },
-  { val: "5★", label: "RATING" },
-];
-
-const STACK = [
-  { name: "Flutter", color: "var(--neon-cyan)" },
-  { name: "React", color: "var(--neon-purple)" },
-  { name: "Rust", color: "var(--neon-green)" },
-  { name: "AI", color: "#ff6b08" },
-];
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -78,9 +39,17 @@ export default function About() {
   return (
     <section id="about" ref={sectionRef} className="relative">
       <div className="section-container">
-        <h2 className="section-heading reveal-up">
-          &gt; ABOUT <span className="gradient-text">ME</span>_
-        </h2>
+        <div
+          className="flex flex-col justify-center items-center mb-10"
+          style={{
+            marginBottom: "2.5rem",
+            textAlign: "center",
+          }}
+        >
+          <h2 className="section-heading reveal-up">
+            &gt; ABOUT <span className="gradient-text">ME</span>_
+          </h2>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-16 items-start mt-8">
           {/* ── LEFT ── */}
