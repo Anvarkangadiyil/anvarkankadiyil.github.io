@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 const BLOGS = [
   {
     title:
@@ -94,13 +96,12 @@ export default function Blog() {
                     borderBottom: "4px solid var(--neon-cyan)",
                   }}
                 >
-                  <img
+                  <Image
                     src={blog.image}
                     alt={blog.title}
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 300px"
                     style={{
-                      width: "100%",
-                      height: "100%",
                       objectFit: "cover",
                       filter: "contrast(1.15) grayscale(0.2)",
                       display: "block",

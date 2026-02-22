@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -69,7 +69,9 @@ function FloatingPixels() {
   // Use a fixed count to prevent React Three Fiber buffer attribute errors on window resize
   const count = 100;
 
-  const positions = useMemo(() => {
+  // Initialize random positions strictly once via state to satisfy React 19 purity rules
+  // useMemo's factory function cannot handle impure random calls in strict mode
+  const [positions] = useState(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 15;
@@ -77,7 +79,7 @@ function FloatingPixels() {
       pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
     }
     return pos;
-  }, [count]);
+  });
 
   const ref = useRef<THREE.Points>(null);
   useFrame((state) => {

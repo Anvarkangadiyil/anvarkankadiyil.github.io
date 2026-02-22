@@ -74,7 +74,7 @@ function useHeroAnimation(refs: {
     };
 
     animate();
-  }, []);
+  }, [refs.heading, refs.sub, refs.cta, refs.social]);
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────

@@ -2,6 +2,7 @@
 
 import { STACK, STATS, TIMELINE } from "@/lib/experience";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -87,12 +88,12 @@ export default function About() {
                   overflow: "hidden",
                 }}
               >
-                <img
+                <Image
                   src="/images/anvar.jpg"
                   alt="Anvar Kangadiyil"
+                  fill
+                  sizes="260px"
                   style={{
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     imageRendering: "pixelated",
                     filter: "contrast(1.15)",

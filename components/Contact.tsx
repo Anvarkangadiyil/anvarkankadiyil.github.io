@@ -176,7 +176,7 @@ export default function Contact() {
                 letterSpacing: "0.1em",
               }}
             >
-              // ALTERNATE COMMS
+              {`// ALTERNATE COMMS`}
             </span>
 
             <a
