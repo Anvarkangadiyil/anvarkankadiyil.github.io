@@ -7,6 +7,10 @@ import GrainOverlay from "@/components/GrainOverlay";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { siteConfig } from "@/lib/constants";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
+import { Analytics } from "@vercel/analytics/next"
+
 
 const pressStart = Press_Start_2P({
   weight: "400",
@@ -30,14 +34,16 @@ export const metadata: Metadata = {
   keywords: [
     "Software Developer",
     "Flutter",
-    "React Native",
     "Next.js",
+    "Full Stack Development",
+    "AI Systems",
+    "AI development",
     "Rust",
     "Portfolio",
     "Anvar Kangadiyil",
   ],
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
-  creator: siteConfig.name,
+  creator: siteConfig.name, 
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -83,6 +89,8 @@ export default function RootLayout({
           <main className="min-h-screen pt-16">{children}</main>
           <Footer />
         </SmoothScroll>
+        <GoogleAnalytics gaId={GA_MEASUREMENT_ID!} />
+        <Analytics />
       </body>
     </html>
   );

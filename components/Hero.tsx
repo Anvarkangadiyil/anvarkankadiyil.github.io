@@ -151,9 +151,9 @@ function HeroSocials({ ref }: { ref: React.Ref<HTMLDivElement> }) {
 
 function ScrollIndicator() {
   return (
-    <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 w-[90%] sm:w-auto text-center">
       <span
-        className="text-[var(--neon-cyan)] text-[8px] sm:text-xs tracking-widest uppercase animate-pulse"
+        className="text-[var(--neon-cyan)] text-[10px] sm:text-xs tracking-widest sm:tracking-widest uppercase animate-pulse leading-snug sm:leading-normal whitespace-pre-wrap sm:whitespace-nowrap"
         style={{ fontFamily: "var(--font-press-start)" }}
       >
         INSERT COIN TO SCROLL ↓

@@ -110,7 +110,9 @@ body {
 /* ===== Gradient Text to Solid Retro ===== */
 .gradient-text {
   color: #fff;
-  text-shadow: 4px 4px 0px var(--neon-purple), -4px -4px 0px var(--neon-cyan);
+  text-shadow:
+    4px 4px 0px var(--neon-purple),
+    -4px -4px 0px var(--neon-cyan);
   font-family: var(--font-press-start), monospace;
 }
 
@@ -128,13 +130,31 @@ body {
 
 .section-heading {
   font-family: var(--font-press-start), monospace;
-  font-size: clamp(1.2rem, 3.5vw, 2.5rem);
+  font-size: clamp(1rem, 4vw, 2.5rem);
   color: #fff;
   text-transform: uppercase;
   margin-bottom: 2rem;
   line-height: 1.4;
   text-shadow: 4px 4px 0 var(--neon-cyan);
   text-align: center;
+  word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .section-heading {
+    font-size: clamp(0.85rem, 5vw, 1.5rem);
+    text-shadow: 3px 3px 0 var(--neon-cyan);
+    margin-bottom: 1.5rem;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-heading {
+    font-size: clamp(0.7rem, 6vw, 1.1rem);
+    text-shadow: 2px 2px 0 var(--neon-cyan);
+    padding: 0 5px;
+  }
 }
 
 .section-subheading {
@@ -144,6 +164,18 @@ body {
   max-width: 600px;
   text-transform: uppercase;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .section-subheading {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-subheading {
+    font-size: 1.2rem;
+  }
 }
 
 /* ===== Custom Cursor ===== */
@@ -166,8 +198,11 @@ body {
   .custom-cursor {
     display: block;
   }
-  
-  html, body, a, button {
+
+  html,
+  body,
+  a,
+  button {
     cursor: none !important;
   }
 }
@@ -186,22 +221,38 @@ body {
   border: none;
   background: var(--neon-cyan);
   color: #000;
-  box-shadow: inset -4px -4px 0px rgba(0,0,0,0.3), 4px 4px 0px #000, 4px 4px 0px 2px var(--neon-cyan);
-  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow:
+    inset -4px -4px 0px rgba(0, 0, 0, 0.3),
+    4px 4px 0px #000,
+    4px 4px 0px 2px var(--neon-cyan);
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
 }
 
-.magnetic-btn:active, .magnetic-btn:hover {
+.magnetic-btn:active,
+.magnetic-btn:hover {
   transform: translate(2px, 2px);
-  box-shadow: inset -2px -2px 0px rgba(0,0,0,0.3), 2px 2px 0px #000, 2px 2px 0px 2px var(--neon-cyan);
+  box-shadow:
+    inset -2px -2px 0px rgba(0, 0, 0, 0.3),
+    2px 2px 0px #000,
+    2px 2px 0px 2px var(--neon-cyan);
 }
 
 .magnetic-btn-primary {
   background: var(--neon-green);
-  box-shadow: inset -4px -4px 0px rgba(0,0,0,0.3), 4px 4px 0px #000, 4px 4px 0px 2px var(--neon-green);
+  box-shadow:
+    inset -4px -4px 0px rgba(0, 0, 0, 0.3),
+    4px 4px 0px #000,
+    4px 4px 0px 2px var(--neon-green);
 }
 
-.magnetic-btn-primary:active, .magnetic-btn-primary:hover {
-  box-shadow: inset -2px -2px 0px rgba(0,0,0,0.3), 2px 2px 0px #000, 2px 2px 0px 2px var(--neon-green);
+.magnetic-btn-primary:active,
+.magnetic-btn-primary:hover {
+  box-shadow:
+    inset -2px -2px 0px rgba(0, 0, 0, 0.3),
+    2px 2px 0px #000,
+    2px 2px 0px 2px var(--neon-green);
 }
 
 .magnetic-btn-secondary {
@@ -211,7 +262,8 @@ body {
   box-shadow: 4px 4px 0px var(--neon-purple);
 }
 
-.magnetic-btn-secondary:active, .magnetic-btn-secondary:hover {
+.magnetic-btn-secondary:active,
+.magnetic-btn-secondary:hover {
   box-shadow: 2px 2px 0px var(--neon-purple);
 }
 
@@ -221,7 +273,9 @@ body {
   background: #000;
   border: 4px solid var(--neon-blue);
   box-shadow: 6px 6px 0px var(--neon-blue);
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
 }
 
 .project-card:hover {
@@ -320,8 +374,12 @@ body {
 }
 
 @keyframes loading {
-  0% { width: 0; }
-  100% { width: 100%; }
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
 /* ===== Timeline ===== */
@@ -360,12 +418,16 @@ body {
   height: 16px;
   background: #000;
   border: 3px solid var(--neon-cyan);
-  box-shadow: 0 0 0 2px #000, 0 0 8px var(--neon-cyan);
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 8px var(--neon-cyan);
 }
 
 .timeline-item.active::before {
   background: var(--neon-cyan);
-  box-shadow: 0 0 0 2px #000, 0 0 12px var(--neon-cyan);
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 12px var(--neon-cyan);
 }
 
 .timeline-item::after {
@@ -404,7 +466,9 @@ body {
   color: #000;
   background: var(--neon-cyan);
   border-color: var(--neon-cyan);
-  box-shadow: 4px 4px 0px #000, 4px 4px 0px 2px var(--neon-cyan);
+  box-shadow:
+    4px 4px 0px #000,
+    4px 4px 0px 2px var(--neon-cyan);
   transform: translate(-2px, -2px);
 }
 
@@ -452,10 +516,17 @@ body {
 }
 
 /* Fix text for typography layout */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-press-start), monospace;
 }
 
-p, span, div {
+p,
+span,
+div {
   font-family: var(--font-vt323), monospace;
 }
