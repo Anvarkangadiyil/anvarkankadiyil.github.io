@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Anvar Kangadiyil",
-  title: "Anvar Kangadiyil | Full Stack Software Dev Portfolio",
+  name: "Anvar Kankadiyil",
+  title: "Anvar Kankadiyil |  Full Stack Engineer",
   description:
-    "Anvar Kangadiyil - Software Developer specializing in Flutter, Next.js, Full Stack Development, Rust, and AI. Crafting scalable digital experiences.",
+    "Anvar Kangadiyil - Full Stack Engineer & Backend Engineer specializing in React, Next.js, Node.js, Express.js, MongoDB, PostgresSQL, JavaScript, TypeScript, Python, and AI. Crafting scalable digital experiences.",
   url: "https://anvarkangadiyil.in",
   ogImage: "/images/og-image-v2.png",
   links: {

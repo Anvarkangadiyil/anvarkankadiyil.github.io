@@ -33,8 +33,11 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: [
     "Software Developer",
+    "AI Engineer",
+    "Backend Engineer",
     "Flutter",
     "Next.js",
+    "Node.js",
     "Express.js",
     "Full Stack Development",
     "AI Systems",

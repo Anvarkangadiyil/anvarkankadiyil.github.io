@@ -46,6 +46,7 @@ export const STACK = [
     { name: "AI Systems", color: "#ff6b08" },
     { name: "PostgreSQL", color: "#336791" },
     { name: "TypeScript", color: "#007acc" },
+    { name: "Node.js", color: "#8cc84b" },
     { name: "Express.js", color: "#e0e0e0" },
     { name: "Python", color: "#3776ab" },
     { name: "Docker", color: "#2496ed" },
