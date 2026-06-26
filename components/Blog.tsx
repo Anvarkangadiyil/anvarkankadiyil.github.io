@@ -26,6 +26,17 @@ const BLOGS = [
     tag: "RUST",
     index: "02",
   },
+  {
+    title:
+      "A Comprehensive Systematic Review of Retrieval-Augmented Generation (RAG): Developments, Limitations, and Future Pathways",
+    excerpt:
+      "A structured systematic review of Retrieval-Augmented Generation (RAG) research from 2020 to 2026, documenting the architectural evolution from retrieve-then-read prototypes to modular agentic pipelines.",
+    image: "/images/rag_review_preview.png",
+    url: "https://ijetjournal.org/retrieval-augmented-generation-rag/",
+    date: "2026",
+    tag: "RESEARCH",
+    index: "03",
+  },
 ];
 
 export default function Blog() {

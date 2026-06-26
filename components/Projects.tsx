@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { projects, ProjectCategory } from "@/lib/projects";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 const categories: { label: string; value: ProjectCategory | "all" }[] = [
@@ -206,23 +207,39 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
             }}
           />
 
-          {/* Initial letter */}
-          <span
-            style={{
-              fontFamily: "var(--font-press-start), monospace",
-              fontSize: "clamp(2rem, 5vw, 3rem)",
-              color: "#fff",
-              textShadow:
-                "4px 4px 0 var(--neon-cyan), -2px -2px 0 var(--neon-purple)",
-              position: "relative",
-              zIndex: 1,
-              transition: "transform 0.2s",
-              lineHeight: 1,
-            }}
-            className="card-initial"
-          >
-            {project.title.charAt(0)}
-          </span>
+          {project.image && !project.image.includes("placeholder") ? (
+            <Image
+              src={project.image}
+              alt={project.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 300px"
+              style={{
+                objectFit: "cover",
+                imageRendering: "pixelated",
+                opacity: 0.8,
+                transition: "opacity 0.2s, transform 0.2s",
+              }}
+              className="project-card-image"
+            />
+          ) : (
+            /* Initial letter */
+            <span
+              style={{
+                fontFamily: "var(--font-press-start), monospace",
+                fontSize: "clamp(2rem, 5vw, 3rem)",
+                color: "#fff",
+                textShadow:
+                  "4px 4px 0 var(--neon-cyan), -2px -2px 0 var(--neon-purple)",
+                position: "relative",
+                zIndex: 1,
+                transition: "transform 0.2s",
+                lineHeight: 1,
+              }}
+              className="card-initial"
+            >
+              {project.title.charAt(0)}
+            </span>
+          )}
 
           {/* Hover overlay — Problem / Results */}
           <div

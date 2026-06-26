@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     "Software Developer",
     "Flutter",
     "Next.js",
+    "Express.js",
     "Full Stack Development",
     "AI Systems",
     "AI development",

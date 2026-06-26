@@ -11,7 +11,7 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/_codingfreak/",
     medium: "https://medium.com/@anvarkangadiyil",
     resume:
-      "https://drive.google.com/file/d/18psb28NKCIau7XZt7c8-NKRK5aSyRxtd/view?usp=sharing",
+      "https://drive.google.com/file/d/12-205Kh_BYdLPHFx4w4M7K_CQamky6M7/view?usp=sharing",
   },
   email: "anvarkangadiyil@gmail.com",
   contactFormEndpoint:

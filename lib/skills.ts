@@ -14,6 +14,7 @@ export const skills: Skill[] = [
     { name: "Rust", category: "language" },
     { name: "Python", category: "language" },
     { name: "Node.js", category: "framework" },
+    { name: "Express.js", category: "framework" },
     { name: "HTML/CSS", category: "language" },
     { name: "Tailwind CSS", category: "framework" },
     { name: "Three.js", category: "framework" },
