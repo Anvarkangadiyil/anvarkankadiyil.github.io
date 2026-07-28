@@ -17,6 +17,31 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        slug: "micham-saas",
+        title: "Micham — Bookkeeping & Invoicing SaaS",
+        description:
+            "A modern, zero-bloat bookkeeping and invoicing SaaS designed specifically for freelancers, independent contractors, and digital creators.",
+        category: ["fullstack"],
+        techStack: [
+            "Next.js",
+            "TypeScript",
+            "Tailwind CSS",
+            "Auth.js",
+            "Prisma",
+            "PostgreSQL"
+        ],
+        problem:
+            "Freelancers and independent contractors struggle with bloated financial software, complex tax tools, and fragmented cashflow tracking.",
+        solution:
+            "Built Micham, a streamlined bookkeeping SaaS featuring interactive cashflow analytics, client CRM, and automated PDF invoice generation.",
+        results:
+            "Delivered a zero-bloat financial workflow enabling creators to generate invoices in seconds and track business health effortlessly.",
+        image: "/images/placeholder.svg",
+        github: "https://github.com/Anvarkangadiyil/micham-saas",
+        demo: "https://micham.vercel.app/",
+        featured: true,
+    },
+    {
         slug: "axiom-ai-code-editor",
         title: "Axiom — AI Code Editor",
         description:
@@ -36,9 +61,9 @@ export const projects: Project[] = [
             "Built an AI-native code editor integrating real-time code generation, inline suggestions, and conversational debugging directly inside the editor.",
         results:
             "Unified coding + AI workflow, reducing context switching and improving development speed.",
-        image: "/images/placeholder.svg",
+        image: "/images/axiom_preview.png",
         github: "https://github.com/Anvarkangadiyil/axiom",
-        demo: undefined,
+        demo: "https://axiom-iota-rust.vercel.app/",
         featured: true,
     },
 
@@ -97,7 +122,7 @@ export const projects: Project[] = [
             "Built a full-stack idea sharing platform with CMS integration and public idea listings.",
         results:
             "Live production deployment enabling founders to pitch and discover startup concepts.",
-        image: "/images/placeholder.svg",
+        image: "/images/ideafy_preview.png",
         github: "https://github.com/Anvarkangadiyil/ideafy",
         demo: "https://ideafy-nine.vercel.app/",
         featured: true,

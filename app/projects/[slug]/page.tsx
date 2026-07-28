@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
+import ProjectPreview from "@/components/ProjectPreview";
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -282,7 +283,7 @@ export default async function ProjectPage({
           {project.results}
         </SectionBlock>
 
-        {/* Screenshot */}
+        {/* Project Preview */}
         <div>
           <div
             style={{
@@ -293,7 +294,7 @@ export default async function ProjectPage({
             }}
           >
             <span style={{ ...PX("0.5rem", "var(--neon-cyan)") }}>
-              &gt; SCREENSHOT
+              &gt; PROJECT.PREVIEW
             </span>
             <div
               style={{
@@ -306,82 +307,12 @@ export default async function ProjectPage({
             />
           </div>
 
-          <div
-            style={{
-              background: "#000",
-              border: "4px solid var(--neon-green)",
-              boxShadow: "8px 8px 0 var(--neon-cyan)",
-              padding: 8,
-            }}
-          >
-            {/* Fake window bar */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                borderBottom: "3px solid var(--neon-green)",
-                paddingBottom: 6,
-                marginBottom: 8,
-              }}
-            >
-              {[
-                "var(--neon-green)",
-                "var(--neon-cyan)",
-                "var(--neon-purple)",
-              ].map((c, i) => (
-                <span
-                  key={i}
-                  style={{
-                    display: "inline-block",
-                    width: 10,
-                    height: 10,
-                    background: c,
-                    border: `2px solid ${c}`,
-                  }}
-                />
-              ))}
-              <span style={{ ...PX("0.4rem", "#555"), marginLeft: 8 }}>
-                {project.title.toUpperCase()}.PNG
-              </span>
-            </div>
-
-            <div
-              style={{
-                position: "relative",
-                aspectRatio: "16/9",
-                overflow: "hidden",
-              }}
-            >
-              <Image
-                src={project.image}
-                alt={`${project.title} screenshot`}
-                fill
-                style={{ objectFit: "cover", imageRendering: "pixelated" }}
-              />
-              {/* Scanline overlay on image */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  pointerEvents: "none",
-                  background:
-                    "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)",
-                }}
-              />
-            </div>
-
-            <p
-              style={{
-                ...VT("#555"),
-                fontSize: "0.9rem",
-                marginTop: 6,
-                textAlign: "center",
-              }}
-            >
-              MAIN APPLICATION INTERFACE
-            </p>
-          </div>
+          <ProjectPreview
+            url={project.demo}
+            image={project.image}
+            title={project.title}
+            github={project.github}
+          />
         </div>
 
         {/* Back button */}

@@ -5,6 +5,7 @@ import { projects, ProjectCategory } from "@/lib/projects";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import ProjectPreview from "@/components/ProjectPreview";
 
 const categories: { label: string; value: ProjectCategory | "all" }[] = [
   { label: "All", value: "all" },
@@ -181,7 +182,7 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
             "transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease",
         }}
       >
-        {/* ── Image / preview area ── */}
+        {/* ── Card Header (First Letter) ── */}
         <div
           className="card-image"
           style={{
@@ -207,39 +208,23 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
             }}
           />
 
-          {project.image && !project.image.includes("placeholder") ? (
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 300px"
-              style={{
-                objectFit: "cover",
-                imageRendering: "pixelated",
-                opacity: 0.8,
-                transition: "opacity 0.2s, transform 0.2s",
-              }}
-              className="project-card-image"
-            />
-          ) : (
-            /* Initial letter */
-            <span
-              style={{
-                fontFamily: "var(--font-press-start), monospace",
-                fontSize: "clamp(2rem, 5vw, 3rem)",
-                color: "#fff",
-                textShadow:
-                  "4px 4px 0 var(--neon-cyan), -2px -2px 0 var(--neon-purple)",
-                position: "relative",
-                zIndex: 1,
-                transition: "transform 0.2s",
-                lineHeight: 1,
-              }}
-              className="card-initial"
-            >
-              {project.title.charAt(0)}
-            </span>
-          )}
+          {/* Capital initial letter */}
+          <span
+            style={{
+              fontFamily: "var(--font-press-start), monospace",
+              fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
+              color: "#fff",
+              textShadow:
+                "4px 4px 0 var(--neon-cyan), -2px -2px 0 var(--neon-purple)",
+              position: "relative",
+              zIndex: 1,
+              transition: "transform 0.2s ease, text-shadow 0.2s ease",
+              lineHeight: 1,
+            }}
+            className="card-initial select-none group-hover:scale-110"
+          >
+            {project.title.charAt(0)}
+          </span>
 
           {/* Hover overlay — Problem / Results */}
           <div
