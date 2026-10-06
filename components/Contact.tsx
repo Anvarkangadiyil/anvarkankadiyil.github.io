@@ -35,7 +35,7 @@ export default function Contact() {
   };
 
   const btnLabel = {
-    idle: "Send message",
+    idle: "./send.sh",
     sending: "Sending…",
     success: "Message sent ✓",
     error: "Failed — try again",
@@ -49,7 +49,7 @@ export default function Contact() {
           <div>
             <SectionHeader
               index="05"
-              label="contact"
+              file="contact.sh"
               title="Let's build something"
               subtitle="Have a project, role or idea in mind? Send a message — I usually reply within a couple of days."
             />
@@ -89,12 +89,12 @@ export default function Contact() {
             className="reveal card flex flex-col gap-5 p-6 sm:p-8"
           >
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field id="name" name="name" label="Name" type="text" placeholder="Jane Doe" autoComplete="name" />
-              <Field id="email" name="email" label="Email" type="email" placeholder="jane@company.com" autoComplete="email" />
+              <Field id="name" name="name" label="--name" type="text" placeholder="Jane Doe" autoComplete="name" />
+              <Field id="email" name="email" label="--email" type="email" placeholder="jane@company.com" autoComplete="email" />
             </div>
 
             <div>
-              <Label htmlFor="message">Message</Label>
+              <Label htmlFor="message">--message</Label>
               <textarea
                 id="message"
                 name="message"
@@ -108,7 +108,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="btn btn-primary self-start disabled:opacity-60"
+              className="btn btn-primary self-start font-mono disabled:opacity-60"
             >
               {btnLabel}
             </button>
@@ -134,7 +134,7 @@ function Label({
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-2 block text-sm font-medium text-[var(--color-muted)]"
+      className="mb-2 block font-mono text-sm text-[var(--color-muted)]"
     >
       {children}
     </label>

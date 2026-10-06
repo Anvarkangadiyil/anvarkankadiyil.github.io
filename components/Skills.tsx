@@ -21,7 +21,7 @@ export default function Skills() {
       <div className="section-container">
         <SectionHeader
           index="03"
-          label="skills"
+          file="skills.ts"
           title="Tools of the trade"
           subtitle="The languages, frameworks and platforms I reach for day to day."
         />

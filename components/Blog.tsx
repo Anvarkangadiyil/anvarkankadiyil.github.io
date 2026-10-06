@@ -52,7 +52,7 @@ export default function Blog() {
       <div className="section-container">
         <SectionHeader
           index="04"
-          label="writing"
+          file="writing/"
           title="Writing & research"
           subtitle="Notes on Rust, software engineering and AI systems."
         />

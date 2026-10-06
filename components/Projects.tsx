@@ -31,7 +31,7 @@ export default function Projects() {
       <div className="section-container">
         <SectionHeader
           index="02"
-          label="projects"
+          file="projects/"
           title="Selected work"
           subtitle="Things I've designed, built and shipped — from SaaS products to AI tooling and systems experiments."
         />
@@ -60,7 +60,11 @@ export default function Projects() {
           <AnimatePresence mode="popLayout">
             {filtered.length > 0 ? (
               filtered.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
+                <ProjectCard
+                  key={project.slug}
+                  project={project}
+                  index={projects.indexOf(project) + 1}
+                />
               ))
             ) : (
               <motion.p
@@ -81,7 +85,13 @@ export default function Projects() {
 }
 
 // ─── Project Card ─────────────────────────────────────────────────────────────
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) {
   return (
     <motion.article
       layout
@@ -94,6 +104,12 @@ function ProjectCard({ project }: { project: Project }) {
       <ProjectCover project={project} sizes="(max-width: 768px) 100vw, 540px" />
 
       <div className="flex flex-1 flex-col gap-3 p-6">
+        <p className="font-mono text-xs text-[var(--color-subtle)]">
+          <span className="text-[var(--color-accent)]">
+            [{String(index).padStart(2, "0")}]
+          </span>{" "}
+          ./{project.slug}
+        </p>
         <h3 className="text-lg font-semibold tracking-tight">
           <Link
             href={`/projects/${project.slug}`}
@@ -118,9 +134,9 @@ function ProjectCard({ project }: { project: Project }) {
         <div className="relative z-10 mt-2 flex items-center gap-4 border-t border-[var(--color-border)] pt-4 text-sm">
           <Link
             href={`/projects/${project.slug}`}
-            className="font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)]"
+            className="font-mono font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)]"
           >
-            Case study →
+            cat README →
           </Link>
           {project.github && (
             <a

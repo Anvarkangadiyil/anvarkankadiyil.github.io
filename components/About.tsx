@@ -14,7 +14,7 @@ export default function About() {
   return (
     <section id="about" ref={sectionRef} className="relative">
       <div className="section-container">
-        <SectionHeader index="01" label="about" title="About me" />
+        <SectionHeader index="01" file="about.md" title="About me" />
 
         <div className="grid items-start gap-14 md:grid-cols-[280px_1fr] lg:gap-20">
           {/* ── LEFT ── */}

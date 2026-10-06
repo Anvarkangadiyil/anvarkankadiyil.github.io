@@ -4,6 +4,8 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CommandPalette from "@/components/CommandPalette";
+import StatusBar from "@/components/StatusBar";
 import { siteConfig } from "@/lib/constants";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
@@ -79,11 +81,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="antialiased">
+      <body className="antialiased pb-7">
         <SmoothScroll>
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <StatusBar />
+          <CommandPalette />
         </SmoothScroll>
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID!} />
         <Analytics />

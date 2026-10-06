@@ -13,10 +13,9 @@ export default function Footer() {
     <footer className="border-t border-[var(--color-border)]">
       <div className="mx-auto flex max-w-[1120px] flex-col items-start justify-between gap-6 px-4 py-10 sm:flex-row sm:items-center sm:px-6">
         <div>
-          <p className="font-mono text-sm">
-            <span className="text-[var(--color-accent)]">~/</span>
-            {siteConfig.name.split(" ")[0].toLowerCase()}
-            <span className="text-[var(--color-subtle)]">.dev</span>
+          <p className="font-mono text-sm text-[var(--color-subtle)]">
+            {"// eof — thanks for reading"}
+            <span className="cursor-blink text-[var(--color-accent)]">_</span>
           </p>
           <p className="mt-1 text-sm text-[var(--color-subtle)]">
             © {new Date().getFullYear()} {siteConfig.name}. Built with Next.js.
