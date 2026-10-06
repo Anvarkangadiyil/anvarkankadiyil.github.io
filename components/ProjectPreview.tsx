@@ -78,197 +78,57 @@ export default function ProjectPreview({
     ? url.replace(/^https?:\/\//, "").replace(/\/$/, "")
     : `${title.toLowerCase().replace(/\s+/g, "-")}.png`;
 
+  const showIframe = Boolean(url) && !iframeError;
+
   return (
-    <div className={`project-preview-wrapper ${className}`}>
-      {/* Cyberpunk Browser Frame Container */}
+    <div className={className}>
       <div
         onClick={handleContainerClick}
-        title={targetLink ? `Click to launch ${displayUrl} in a new tab` : title}
-        style={{
-          background: "#050508",
-          border: "4px solid var(--neon-green)",
-          boxShadow: "8px 8px 0 var(--neon-cyan)",
-          padding: "8px",
-          position: "relative",
-          cursor: targetLink ? "pointer" : "default",
-          overflow: "hidden",
-          transition:
-            "box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
-        }}
-        className="group hover:border-[var(--neon-cyan)] hover:shadow-[8px_8px_0_var(--neon-purple)]"
+        title={targetLink ? `Open ${displayUrl} in a new tab` : title}
+        className={`card group overflow-hidden ${targetLink ? "cursor-pointer card-hover" : ""}`}
       >
-        {/* Browser Top Window Bar */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderBottom: "3px solid var(--neon-green)",
-            paddingBottom: "6px",
-            marginBottom: "8px",
-            fontSize: "0.75rem",
-          }}
-        >
-          {/* Controls Dots */}
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            {[
-              "var(--neon-green)",
-              "var(--neon-cyan)",
-              "var(--neon-purple)",
-            ].map((color, i) => (
-              <span
-                key={i}
-                style={{
-                  display: "inline-block",
-                  width: 10,
-                  height: 10,
-                  background: color,
-                  border: `1px solid ${color}`,
-                  borderRadius: "2px",
-                }}
-              />
-            ))}
+        {/* Browser bar */}
+        <div className="flex items-center gap-3 border-b border-[var(--color-border)] px-4 py-3">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#3f3f46]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#3f3f46]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#3f3f46]" />
           </div>
-
-          {/* Cyberpunk Address Bar */}
-          <div
-            style={{
-              flex: 1,
-              maxWidth: "60%",
-              margin: "0 12px",
-              background: "#111116",
-              border: "1px solid rgba(0, 255, 255, 0.3)",
-              padding: "2px 10px",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span style={{ color: "var(--neon-green)", fontSize: "0.6rem" }}>
-              🔒
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-vt323), monospace",
-                fontSize: "0.95rem",
-                color: "#e0e0e0",
-                letterSpacing: "0.05em",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {url ? url : `LOCAL://${displayUrl}`}
-            </span>
+          <div className="min-w-0 flex-1 truncate rounded-md bg-[var(--color-bg)] px-3 py-1 font-mono text-xs text-[var(--color-muted)]">
+            {displayUrl}
           </div>
-
-          {/* Status Badge */}
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span
-              style={{
-                fontFamily: "var(--font-press-start), monospace",
-                fontSize: "0.42rem",
-                padding: "2px 6px",
-                background:
-                  url && !iframeError
-                    ? "rgba(57, 255, 20, 0.15)"
-                    : "rgba(255, 0, 255, 0.15)",
-                border:
-                  url && !iframeError
-                    ? "1px solid var(--neon-green)"
-                    : "1px solid var(--neon-purple)",
-                color:
-                  url && !iframeError
-                    ? "var(--neon-green)"
-                    : "var(--neon-purple)",
-                letterSpacing: "0.05em",
-              }}
-            >
-              {isLoading
-                ? "LOADING..."
-                : url && !iframeError
-                ? "● LIVE IFRAME"
-                : "▲ SCREENSHOT"}
-            </span>
-
-            {targetLink && (
-              <span
-                style={{
-                  fontFamily: "var(--font-press-start), monospace",
-                  fontSize: "0.45rem",
-                  color: "var(--neon-cyan)",
-                }}
-              >
-                ↗
-              </span>
-            )}
-          </div>
+          <span className="hidden shrink-0 font-mono text-[11px] text-[var(--color-subtle)] sm:inline">
+            {isLoading ? "loading…" : showIframe ? "● live" : "screenshot"}
+          </span>
         </div>
 
-        {/* Viewport Container */}
+        {/* Viewport */}
         <div
-          style={{
-            position: "relative",
-            width: "100%",
-            aspectRatio: aspectRatio,
-            background: "#000",
-            overflow: "hidden",
-          }}
+          className="relative w-full overflow-hidden bg-[var(--color-bg)]"
+          style={{ aspectRatio }}
         >
-          {/* 1. Loading Spinner Overlay */}
           <AnimatePresence>
             {isLoading && (
               <motion.div
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  zIndex: 20,
-                  background: "rgba(5, 5, 10, 0.92)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "12px",
-                }}
+                className="absolute inset-0 z-20 flex items-center justify-center bg-[var(--color-surface)]"
               >
-                {/* Cyberpunk Spinner */}
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    border: "3px solid rgba(0, 255, 255, 0.2)",
-                    borderTop: "3px solid var(--neon-cyan)",
-                    borderRight: "3px solid var(--neon-green)",
-                    borderRadius: "50%",
-                    animation: "spin 0.8s linear infinite",
-                  }}
-                />
-                <span
-                  style={{
-                    fontFamily: "var(--font-press-start), monospace",
-                    fontSize: "0.55rem",
-                    color: "var(--neon-cyan)",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  CONNECTING TO LIVE EMBED...
+                <span className="font-mono text-sm text-[var(--color-subtle)]">
+                  <span className="text-[var(--color-accent)]">$</span>{" "}
+                  connecting to live preview
+                  <span className="cursor-blink">_</span>
                 </span>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* 2. Live Iframe (if URL provided and no error) */}
-          {url && !iframeError && (
+          {showIframe && (
             <motion.iframe
               ref={iframeRef}
               src={url}
-              title={`${title} Live Preview`}
+              title={`${title} live preview`}
               loading="lazy"
               onLoad={handleIframeLoad}
               onError={handleIframeError}
@@ -276,133 +136,30 @@ export default function ProjectPreview({
               initial={{ opacity: 0 }}
               animate={{ opacity: isLoaded ? 1 : 0 }}
               transition={{ duration: 0.5 }}
-              style={{
-                width: "100%",
-                height: "100%",
-                border: "none",
-                pointerEvents: "none", // Clicks pass through to container to launch new tab
-                background: "#ffffff",
-              }}
+              // Clicks pass through to the container, which opens a new tab
+              className="pointer-events-none h-full w-full border-0 bg-white"
             />
           )}
 
-          {/* 3. Fallback Screenshot (if no URL or iframe failed) */}
-          {(iframeError || !url) && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              <Image
-                src={image}
-                alt={`${title} Preview Screenshot`}
-                fill
-                sizes="(max-width: 768px) 100vw, 800px"
-                style={{
-                  objectFit: "cover",
-                  imageRendering: "pixelated",
-                }}
-              />
-              {/* Scanline overlay */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  pointerEvents: "none",
-                  background:
-                    "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px)",
-                }}
-              />
-            </motion.div>
+          {!showIframe && (
+            <Image
+              src={image}
+              alt={`${title} screenshot`}
+              fill
+              sizes="(max-width: 768px) 100vw, 800px"
+              className="object-cover object-top"
+            />
           )}
 
-          {/* Hover launch hint overlay */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 10,
-              background: "rgba(0, 0, 0, 0.35)",
-              opacity: 0,
-              transition: "opacity 0.2s ease",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              pointerEvents: "none",
-            }}
-            className="group-hover:opacity-100"
-          >
-            <span
-              style={{
-                fontFamily: "var(--font-press-start), monospace",
-                fontSize: "0.6rem",
-                color: "#ffffff",
-                background: "rgba(0, 0, 0, 0.85)",
-                border: "2px solid var(--neon-cyan)",
-                boxShadow: "4px 4px 0 var(--neon-purple)",
-                padding: "8px 14px",
-                letterSpacing: "0.08em",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              ▶ LAUNCH WEBSITE IN NEW TAB ↗
-            </span>
-          </div>
-        </div>
-
-        {/* Footer info bar */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: "6px",
-            padding: "2px 4px",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-vt323), monospace",
-              fontSize: "0.95rem",
-              color: "var(--text-secondary)",
-              margin: 0,
-            }}
-          >
-            {iframeError || !url
-              ? "IMAGE SCREENSHOT FALLBACK"
-              : "INTERACTIVE LIVE EMBED VIEWPORT"}
-          </p>
-
-          <span
-            style={{
-              fontFamily: "var(--font-press-start), monospace",
-              fontSize: "0.45rem",
-              color: "var(--neon-cyan)",
-            }}
-          >
-            [ CLICK TO OPEN ]
-          </span>
+          {targetLink && (
+            <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+              <span className="btn btn-secondary btn-sm bg-[var(--color-bg)]">
+                Open in new tab ↗
+              </span>
+            </div>
+          )}
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
 }

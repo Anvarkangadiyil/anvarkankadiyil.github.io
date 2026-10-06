@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { siteConfig } from "@/lib/constants";
+import SectionHeader from "./SectionHeader";
+import SocialIcon from "./SocialIcon";
+import { useReveal } from "@/lib/useReveal";
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -9,32 +12,7 @@ export default function Contact() {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
-
-  useEffect(() => {
-    const loadGSAP = async () => {
-      const gsap = (await import("gsap")).default;
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
-      const els = sectionRef.current?.querySelectorAll(".reveal-up");
-      if (els) {
-        els.forEach((el, i) => {
-          gsap.fromTo(
-            el,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.4,
-              delay: i * 0.08,
-              ease: "steps(5)",
-              scrollTrigger: { trigger: el, start: "top 88%" },
-            },
-          );
-        });
-      }
-    };
-    loadGSAP();
-  }, []);
+  useReveal(sectionRef);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,198 +35,94 @@ export default function Contact() {
   };
 
   const btnLabel = {
-    idle: "[ TRANSMIT MESSAGE ]",
-    sending: "[ UPLOADING... ]",
-    success: "[ TRANSMISSION OK ]",
-    error: "[ ERROR — RETRY ]",
+    idle: "Send message",
+    sending: "Sending…",
+    success: "Message sent ✓",
+    error: "Failed — try again",
   }[status];
 
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="relative"
-      style={{
-        background: "var(--bg-secondary)",
-        borderTop: "4px solid var(--neon-green)",
-        paddingTop: "5rem",
-        paddingBottom: "5rem",
-      }}
-    >
-      <div className="section-container relative z-10">
-        <div style={{ maxWidth: 680, margin: "0 auto" }}>
-          {/* Header */}
-          <h2 className="section-heading reveal-up">
-            &gt; GET IN <span className="gradient-text">TOUCH</span>_
-          </h2>
-          <p
-            className="section-subheading reveal-up"
-            style={{ marginBottom: "2.5rem" }}
-          >
-            [ WAITING FOR USER INPUT... ]
-          </p>
+    <section id="contact" ref={sectionRef} className="relative">
+      <div className="section-container">
+        <div className="grid gap-12 md:grid-cols-[1fr_1.2fr] lg:gap-20">
+          {/* ── Left ── */}
+          <div>
+            <SectionHeader
+              index="05"
+              label="contact"
+              title="Let's build something"
+              subtitle="Have a project, role or idea in mind? Send a message — I usually reply within a couple of days."
+            />
 
-          {/* Form */}
+            <div className="reveal -mt-4 space-y-5">
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="group inline-flex items-center gap-2 font-mono text-[15px] text-[var(--color-text)]"
+              >
+                <span className="text-[var(--color-accent)]">&gt;</span>
+                <span className="border-b border-[var(--color-border-strong)] transition-colors group-hover:border-[var(--color-accent)]">
+                  {siteConfig.email}
+                </span>
+              </a>
+
+              <div className="flex items-center gap-5">
+                {(["github", "linkedin", "medium"] as const).map((key) => (
+                  <a
+                    key={key}
+                    href={siteConfig.links[key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={key}
+                    className="text-[var(--color-subtle)] transition-colors hover:text-[var(--color-text)]"
+                  >
+                    <SocialIcon name={key} />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Form ── */}
           <form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="reveal-up"
-            style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
+            className="reveal card flex flex-col gap-5 p-6 sm:p-8"
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "1.25rem",
-              }}
-              className="grid-cols-1 md:grid-cols-2"
-            >
-              <Field
-                id="contact-name"
-                name="name"
-                label="NAME"
-                placeholder="PLAYER_1"
-                type="text"
-              />
-              <Field
-                id="contact-email"
-                name="email"
-                label="EMAIL"
-                placeholder="name@server.com"
-                type="email"
-              />
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field id="name" name="name" label="Name" type="text" placeholder="Jane Doe" autoComplete="name" />
+              <Field id="email" name="email" label="Email" type="email" placeholder="jane@company.com" autoComplete="email" />
             </div>
 
             <div>
-              <Label htmlFor="contact-message">MESSAGE</Label>
+              <Label htmlFor="message">Message</Label>
               <textarea
-                id="contact-message"
+                id="message"
                 name="message"
                 required
                 rows={5}
-                placeholder="INPUT DATA HERE..."
-                className="form-input"
-                style={{ resize: "none", display: "block", width: "100%" }}
+                placeholder="Tell me a bit about what you're working on…"
+                className="form-input resize-y"
               />
             </div>
 
             <button
               type="submit"
               disabled={status === "sending"}
-              className="magnetic-btn magnetic-btn-primary"
-              style={{
-                width: "100%",
-                opacity: status === "sending" ? 0.6 : 1,
-                background:
-                  status === "success"
-                    ? "var(--neon-green)"
-                    : status === "error"
-                      ? "#ff2d78"
-                      : undefined,
-              }}
+              className="btn btn-primary self-start disabled:opacity-60"
             >
               {btnLabel}
             </button>
+
+            <p role="status" aria-live="polite" className="sr-only">
+              {status === "success" && "Message sent successfully."}
+              {status === "error" && "Message failed to send."}
+            </p>
           </form>
-
-          {/* Divider */}
-          <div
-            className="reveal-up"
-            style={{
-              margin: "2.5rem 0",
-              height: 4,
-              background:
-                "repeating-linear-gradient(90deg, var(--neon-purple) 0 8px, transparent 8px 16px)",
-              opacity: 0.4,
-            }}
-          />
-
-          {/* Social / alternate comms */}
-          <div
-            className="reveal-up"
-            style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
-          >
-            <span
-              style={{
-                fontFamily: "var(--font-press-start), monospace",
-                fontSize: "0.55rem",
-                color: "var(--neon-purple)",
-                letterSpacing: "0.1em",
-              }}
-            >
-              {`// ALTERNATE COMMS`}
-            </span>
-
-            <a
-              href={`mailto:${siteConfig.email}`}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                fontFamily: "var(--font-vt323), monospace",
-                fontSize: "1.3rem",
-                color: "#fff",
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--neon-cyan)")
-              }
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#fff")}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-press-start), monospace",
-                  fontSize: "0.5rem",
-                  color: "var(--neon-cyan)",
-                }}
-              >
-                ✉
-              </span>
-              {siteConfig.email}
-            </a>
-
-            {/* Social links if available */}
-            {siteConfig.links?.github && (
-              <a
-                href={siteConfig.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 10,
-                  fontFamily: "var(--font-vt323), monospace",
-                  fontSize: "1.3rem",
-                  color: "#fff",
-                  textDecoration: "none",
-                  letterSpacing: "0.04em",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--neon-green)")
-                }
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#fff")}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-press-start), monospace",
-                    fontSize: "0.5rem",
-                    color: "var(--neon-green)",
-                  }}
-                >
-                  ▸
-                </span>
-                GITHUB
-              </a>
-            )}
-          </div>
         </div>
       </div>
     </section>
   );
 }
-
-// ── Sub-components ────────────────────────────────────────────────────────────
 
 function Label({
   htmlFor,
@@ -260,16 +134,9 @@ function Label({
   return (
     <label
       htmlFor={htmlFor}
-      style={{
-        display: "block",
-        fontFamily: "var(--font-press-start), monospace",
-        fontSize: "0.55rem",
-        color: "var(--neon-cyan)",
-        marginBottom: "0.5rem",
-        letterSpacing: "0.08em",
-      }}
+      className="mb-2 block text-sm font-medium text-[var(--color-muted)]"
     >
-      &gt; {children}:
+      {children}
     </label>
   );
 }
@@ -280,12 +147,14 @@ function Field({
   label,
   placeholder,
   type,
+  autoComplete,
 }: {
   id: string;
   name: string;
   label: string;
   placeholder: string;
   type: string;
+  autoComplete?: string;
 }) {
   return (
     <div>
@@ -296,8 +165,8 @@ function Field({
         name={name}
         required
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className="form-input"
-        style={{ display: "block", width: "100%" }}
       />
     </div>
   );

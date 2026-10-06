@@ -26,23 +26,20 @@ export default function MagneticButton({
     const button = buttonRef.current;
     if (!button) return;
 
-    const xTo = gsap.quickTo(button, "x", {
-      duration: 1,
-      ease: "elastic.out(1, 0.3)",
-    });
-    const yTo = gsap.quickTo(button, "y", {
-      duration: 1,
-      ease: "elastic.out(1, 0.3)",
-    });
+    // Only on precise pointers and when motion is welcome
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (!finePointer || reducedMotion) return;
+
+    const xTo = gsap.quickTo(button, "x", { duration: 0.6, ease: "power3.out" });
+    const yTo = gsap.quickTo(button, "y", { duration: 0.6, ease: "power3.out" });
 
     const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
       const { left, top, width, height } = button.getBoundingClientRect();
-      const x = clientX - (left + width / 2);
-      const y = clientY - (top + height / 2);
-
-      xTo(x * 0.3); // Strength of magnetic effect
-      yTo(y * 0.3);
+      xTo((e.clientX - (left + width / 2)) * 0.15);
+      yTo((e.clientY - (top + height / 2)) * 0.15);
     };
 
     const handleMouseLeave = () => {
@@ -64,13 +61,13 @@ export default function MagneticButton({
   return (
     <Component
       ref={buttonRef as any}
-      className={`magnetic-btn ${className}`}
+      className={`btn ${className}`}
       onClick={onClick}
       href={href}
       target={target}
       rel={rel}
     >
-      <span className="relative z-10">{children}</span>
+      {children}
     </Component>
   );
 }

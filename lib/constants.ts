@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "Anvar Kankadiyil",
-  title: "Anvar Kankadiyil |  Full Stack Engineer",
+  name: "Anvar Kangadiyil",
+  title: "Anvar Kangadiyil | Full Stack Engineer",
   description:
     "Anvar Kangadiyil - Full Stack Engineer & Backend Engineer specializing in React, Next.js, Node.js, Express.js, MongoDB, PostgresSQL, JavaScript, TypeScript, Python, and AI. Crafting scalable digital experiences.",
   url: "https://anvarkangadiyil.in",
