@@ -9,11 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fontsource/press-start-2p": "^5.2.7",
-    "@fontsource/vt323": "^5.2.7",
     "@next/third-parties": "^16.1.6",
-    "@react-three/drei": "^10.0.0",
-    "@react-three/fiber": "^9.5.0",
     "@vercel/analytics": "^2.0.1",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.0.0",
@@ -22,14 +18,13 @@
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.170.0"
+    "resend": "^6.32.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^20.11.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@types/three": "^0.170.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.1.6",

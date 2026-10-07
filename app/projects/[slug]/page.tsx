@@ -1,6 +1,5 @@
 import { projects } from "@/lib/projects";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import ProjectPreview from "@/components/ProjectPreview";
@@ -28,54 +27,26 @@ export async function generateMetadata({
   };
 }
 
-// ── Shared style helpers ──────────────────────────────────────────────────────
-const PX = (size = "0.55rem", color = "#fff"): React.CSSProperties => ({
-  fontFamily: "var(--font-press-start), monospace",
-  fontSize: size,
-  color,
-  letterSpacing: "0.06em",
-  lineHeight: 1.8,
-});
-
-const VT = (color = "var(--text-secondary)"): React.CSSProperties => ({
-  fontFamily: "var(--font-vt323), monospace",
-  fontSize: "1.2rem",
-  color,
-  lineHeight: 1.7,
-  letterSpacing: "0.03em",
-});
-
 // ── Sub-components ────────────────────────────────────────────────────────────
 function SectionBlock({
   index,
   label,
   children,
-  color = "var(--neon-cyan)",
 }: {
   index: string;
   label: string;
   children: React.ReactNode;
-  color?: string;
 }) {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "160px 1fr",
-        gap: "1.5rem",
-        borderLeft: `4px solid ${color}`,
-        paddingLeft: "1.25rem",
-      }}
-      className="grid-cols-1 md:grid-cols-[160px_1fr]"
-    >
-      {/* Label column */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <span style={{ ...PX("0.45rem", color) }}>{index}</span>
-        <span style={{ ...PX("0.55rem", "#fff") }}>{label}</span>
+    <section className="grid gap-2 border-t border-[var(--color-border)] pt-8 md:grid-cols-[180px_1fr] md:gap-8">
+      <div>
+        <p className="font-mono text-xs text-[var(--color-accent)]">{index}</p>
+        <h2 className="mt-1 font-medium tracking-tight">{label}</h2>
       </div>
-      {/* Content */}
-      <p style={VT()}>{children}</p>
-    </div>
+      <p className="text-lg leading-relaxed text-[var(--color-muted)]">
+        {children}
+      </p>
+    </section>
   );
 }
 
@@ -90,237 +61,84 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <article
-      style={{
-        minHeight: "100vh",
-        paddingBottom: "5rem",
-        background: "var(--bg-primary)",
-      }}
-    >
-      {/* ── Hero ───────────────────────────────────────────────────── */}
-      <section
-        style={{
-          position: "relative",
-          height: "55vh",
-          minHeight: 320,
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "flex-end",
-          borderBottom: "4px solid var(--neon-green)",
-        }}
+    <article className="mx-auto max-w-[880px] px-4 pb-24 pt-28 sm:px-6">
+      {/* ── Header ── */}
+      <Link
+        href="/#projects"
+        className="font-mono text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
       >
-        {/* Blurred bg image */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className="object-cover"
-            style={{
-              opacity: 0.2,
-              filter: "blur(4px) contrast(1.2)",
-              transform: "scale(1.08)",
-            }}
-            priority
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to top, var(--bg-primary) 30%, transparent 100%)",
-            }}
-          />
-        </div>
+        <span className="text-[var(--color-accent)]">cd</span> ../projects
+      </Link>
 
-        {/* Scanlines overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 1,
-            pointerEvents: "none",
-            background:
-              "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.2) 2px, rgba(0,0,0,0.2) 4px)",
-          }}
-        />
+      <h1 className="mt-6 text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
+        {project.title}
+      </h1>
 
-        {/* Content */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            maxWidth: 1200,
-            width: "100%",
-            margin: "0 auto",
-            padding: "0 1.5rem 2.5rem",
-          }}
-        >
-          {/* Back link */}
-          <Link
-            href="/#projects"
-            style={{
-              ...PX("0.5rem", "var(--neon-cyan)"),
-              textDecoration: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              marginBottom: "1.25rem",
-            }}
-          >
-            ◀ BACK
-          </Link>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-muted)]">
+        {project.description}
+      </p>
 
-          {/* Title */}
-          <h1
-            style={{
-              fontFamily: "var(--font-press-start), monospace",
-              fontSize: "clamp(1rem, 3.5vw, 2rem)",
-              color: "#fff",
-              textShadow: "4px 4px 0 var(--neon-purple)",
-              marginBottom: "1.25rem",
-              lineHeight: 1.4,
-              textTransform: "uppercase",
-            }}
-          >
-            {project.title}
-          </h1>
-
-          {/* Tech badges */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 8,
-              marginBottom: "1.5rem",
-            }}
-          >
-            {project.techStack.map((tech) => (
-              <span
-                key={tech}
-                style={{
-                  ...PX("0.45rem", "var(--neon-green)"),
-                  background: "#000",
-                  border: "2px solid var(--neon-green)",
-                  padding: "4px 10px",
-                  boxShadow: "3px 3px 0 var(--neon-green)",
-                }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          {/* CTA buttons */}
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="magnetic-btn magnetic-btn-primary"
-              >
-                ▶ VIEW CODE
-              </a>
-            )}
-            {project.demo && (
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="magnetic-btn magnetic-btn-secondary"
-              >
-                ▶ LIVE DEMO
-              </a>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Body ───────────────────────────────────────────────────── */}
-      <div
-        style={{
-          maxWidth: 860,
-          margin: "0 auto",
-          padding: "4rem 1.5rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "3rem",
-        }}
-      >
-        {/* Pixel section divider label */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
-          <span style={{ ...PX("0.5rem", "var(--neon-cyan)") }}>
-            &gt; PROJECT.INFO
+      <div className="mt-6 flex flex-wrap gap-2">
+        {project.techStack.map((tech) => (
+          <span key={tech} className="chip">
+            {tech}
           </span>
-          <div
-            style={{
-              flex: 1,
-              height: 3,
-              background:
-                "repeating-linear-gradient(90deg, var(--neon-cyan) 0 6px, transparent 6px 12px)",
-              opacity: 0.3,
-            }}
-          />
-        </div>
+        ))}
+      </div>
 
-        {/* Problem / Solution / Results */}
-        <SectionBlock index="01" label="THE PROBLEM" color="var(--neon-cyan)">
+      {(project.github || project.demo) && (
+        <div className="mt-8 flex flex-wrap gap-3">
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary"
+            >
+              Live demo ↗
+            </a>
+          )}
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary"
+            >
+              View code ↗
+            </a>
+          )}
+        </div>
+      )}
+
+      {/* ── Preview ── */}
+      <div className="mt-12">
+        <ProjectPreview
+          url={project.demo}
+          image={project.image}
+          title={project.title}
+          github={project.github}
+          aspectRatio="16/10"
+        />
+      </div>
+
+      {/* ── Problem / Solution / Results ── */}
+      <div className="mt-16 flex flex-col gap-10">
+        <SectionBlock index="01" label="The problem">
           {project.problem}
         </SectionBlock>
-
-        <SectionBlock index="02" label="THE SOLUTION" color="var(--neon-green)">
+        <SectionBlock index="02" label="The solution">
           {project.solution}
         </SectionBlock>
-
-        <SectionBlock index="03" label="THE RESULTS" color="var(--neon-purple)">
+        <SectionBlock index="03" label="The results">
           {project.results}
         </SectionBlock>
+      </div>
 
-        {/* Project Preview */}
-        <div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginBottom: "1rem",
-            }}
-          >
-            <span style={{ ...PX("0.5rem", "var(--neon-cyan)") }}>
-              &gt; PROJECT.PREVIEW
-            </span>
-            <div
-              style={{
-                flex: 1,
-                height: 3,
-                background:
-                  "repeating-linear-gradient(90deg, var(--neon-cyan) 0 6px, transparent 6px 12px)",
-                opacity: 0.3,
-              }}
-            />
-          </div>
-
-          <ProjectPreview
-            url={project.demo}
-            image={project.image}
-            title={project.title}
-            github={project.github}
-          />
-        </div>
-
-        {/* Back button */}
-        <div>
-          <Link href="/#projects" className="magnetic-btn">
-            ◀ BACK TO PROJECTS
-          </Link>
-        </div>
+      <div className="mt-16 border-t border-[var(--color-border)] pt-8">
+        <Link href="/#projects" className="btn btn-secondary">
+          ← Back to all projects
+        </Link>
       </div>
     </article>
   );

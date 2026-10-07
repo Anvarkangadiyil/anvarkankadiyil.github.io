@@ -1,127 +1,85 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import { navLinks, siteConfig } from "@/lib/constants";
+import {
+  openPalette,
+  useActiveSection,
+  useShortcutLabel,
+} from "@/lib/useActiveSection";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection();
+  const shortcut = useShortcutLabel();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[1000] ${
-        scrolled ? "nav-glass" : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-[1000] border-b transition-colors duration-200 ${
+        scrolled
+          ? "border-[var(--color-border)] bg-[rgba(10,10,11,0.82)] backdrop-blur-md"
+          : "border-transparent"
       }`}
     >
-      <nav className="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between w-full">
-        {/* Logo */}
-        <a
-          href="#home"
-          style={{
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: "4px",
-          }}
+      <nav className="mx-auto flex h-14 w-full max-w-[1120px] items-stretch justify-between px-4 sm:px-6">
+        {/* Prompt-style logo */}
+        <Link
+          href="/#home"
+          className="flex items-center font-mono text-sm text-[var(--color-text)]"
         >
-          <span
-            className="gradient-text"
-            style={{ fontSize: "1.2rem", lineHeight: "1" }}
-          >
-            {siteConfig.name.split(" ")[0]}
+          <span className="text-[var(--color-accent)]">
+            {siteConfig.name.split(" ")[0].toLowerCase()}
           </span>
-          <span
-            style={{
-              color: "var(--neon-green)",
-              fontFamily: "var(--font-press-start), monospace",
-              fontSize: "0.8rem",
-              lineHeight: "1",
-              marginTop: "4px",
-            }}
-          >
-            .dev
-          </span>
-        </a>
+          <span className="text-[var(--color-subtle)]">@portfolio</span>
+          <span className="ml-1 text-[var(--color-muted)]">:~$</span>
+        </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <div className="flex items-center gap-8" style={{ marginTop: "2px" }}>
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="nav-link">
-                {link.label}
-              </a>
-            ))}
-          </div>
+        {/* Editor tabs */}
+        <ul className="hidden items-stretch md:flex" role="list">
+          {navLinks.slice(1).map((link) => {
+            const isActive = active.href === link.href;
+            return (
+              <li key={link.href} className="flex">
+                <a
+                  href={`/${link.href}`}
+                  aria-current={isActive ? "location" : undefined}
+                  className={`tab ${isActive ? "tab-active" : ""}`}
+                >
+                  {link.file}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="flex items-center gap-2">
+          {/* Command palette trigger (doubles as the mobile menu) */}
+          <button
+            onClick={openPalette}
+            className="kbd-btn"
+            aria-label="Open command palette"
+          >
+            <span className="md:hidden">menu</span>
+            <span className="hidden md:inline">{shortcut}</span>
+          </button>
           <a
             href={siteConfig.links.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="magnetic-btn magnetic-btn-primary"
+            className="btn btn-secondary btn-sm hidden sm:inline-flex"
           >
-            ▶ Resume
+            resume.pdf ↗
           </a>
         </div>
-
-        {/* Mobile Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden"
-          aria-label="Toggle menu"
-          style={{ background: "none", border: "none", cursor: "none" }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-press-start), monospace",
-              fontSize: "0.8rem",
-              color: "var(--neon-green)",
-            }}
-          >
-            {isOpen ? "✕" : "▰▰▰"}
-          </span>
-        </button>
       </nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.15 }}
-            className="md:hidden border-t-4 border-[var(--neon-purple)]"
-            style={{ background: "#000" }}
-          >
-            <div className="flex flex-col px-6 py-6 gap-6">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="nav-link text-lg"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href={siteConfig.links.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="magnetic-btn magnetic-btn-primary self-start"
-              >
-                ▶ Resume
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 }

@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
-import { Press_Start_2P, VT323 } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
-import GrainOverlay from "@/components/GrainOverlay";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CommandPalette from "@/components/CommandPalette";
+import StatusBar from "@/components/StatusBar";
 import { siteConfig } from "@/lib/constants";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import { Analytics } from "@vercel/analytics/next"
 
 
-const pressStart = Press_Start_2P({
-  weight: "400",
+const geistSans = Geist({
   subsets: ["latin"],
-  variable: "--font-press-start",
+  variable: "--font-geist-sans",
 });
 
-const vt323 = VT323({
-  weight: "400",
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-vt323",
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
@@ -82,16 +80,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body
-        className={`${pressStart.variable} ${vt323.variable} antialiased selection:bg-[#39ff14] selection:text-black`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="antialiased pb-7">
         <SmoothScroll>
-          <CustomCursor />
-          <GrainOverlay />
           <Navbar />
-          <main className="min-h-screen pt-16">{children}</main>
+          <main className="min-h-screen">{children}</main>
           <Footer />
+          <StatusBar />
+          <CommandPalette />
         </SmoothScroll>
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID!} />
         <Analytics />

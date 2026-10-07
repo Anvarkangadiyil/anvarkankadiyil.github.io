@@ -1,6 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
+import SectionHeader from "./SectionHeader";
+import { useReveal } from "@/lib/useReveal";
+import { siteConfig } from "@/lib/constants";
 
 const BLOGS = [
   {
@@ -40,247 +44,64 @@ const BLOGS = [
 ];
 
 export default function Blog() {
-  return (
-    <section id="blog" className="relative">
-      <div className="section-container">
-        {/* Header */}
-        <div className="flex justify-center items-center flex-col">
-          <h2 className="section-heading">
-            &gt; LATEST <span className="gradient-text">DATA LOGS</span>_
-          </h2>
-          <p
-            className="section-subheading mx-auto text-center"
-            style={{
-              marginBottom: "2.5rem",
-              textAlign: "center",
-            }}
-          >
-            [ SHARING INSIGHTS ON SOFTWARE DEV ]
-          </p>
-        </div>
+  const sectionRef = useRef<HTMLElement>(null);
+  useReveal(sectionRef);
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "1.5rem",
-            maxWidth: 900,
-            margin: "0 auto",
-          }}
-        >
+  return (
+    <section id="blog" ref={sectionRef} className="relative">
+      <div className="section-container">
+        <SectionHeader
+          index="04"
+          file="writing/"
+          title="Writing & research"
+          subtitle="Notes on Rust, software engineering and AI systems."
+        />
+
+        <div className="grid gap-6 md:grid-cols-3">
           {BLOGS.map((blog) => (
             <a
               key={blog.url}
               href={blog.url}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ textDecoration: "none", display: "block" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translate(2px, 2px)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "4px 4px 0 var(--neon-cyan)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "6px 6px 0 var(--neon-cyan)";
-              }}
+              className="reveal card card-hover group flex flex-col overflow-hidden"
             >
-              <article
-                style={{
-                  background: "#000",
-                  border: "4px solid var(--neon-cyan)",
-                  boxShadow: "6px 6px 0 var(--neon-cyan)",
-                  transition:
-                    "transform 0.05s steps(1), box-shadow 0.05s steps(1)",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                {/* Image */}
-                <div
-                  style={{
-                    position: "relative",
-                    aspectRatio: "16/9",
-                    overflow: "hidden",
-                    borderBottom: "4px solid var(--neon-cyan)",
-                  }}
-                >
-                  <Image
-                    src={blog.image}
-                    alt={blog.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 300px"
-                    style={{
-                      objectFit: "cover",
-                      filter: "contrast(1.15) grayscale(0.2)",
-                      display: "block",
-                    }}
-                  />
-                  {/* Scanline overlay */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      pointerEvents: "none",
-                      background:
-                        "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px)",
-                    }}
-                  />
-                  {/* Index badge */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      left: 10,
-                      background: "#000",
-                      border: "2px solid var(--neon-cyan)",
-                      padding: "3px 8px",
-                      fontFamily: "var(--font-press-start), monospace",
-                      fontSize: "0.45rem",
-                      color: "var(--neon-cyan)",
-                    }}
-                  >
-                    LOG_{blog.index}
-                  </div>
-                  {/* Tag badge */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      right: 10,
-                      background: "var(--neon-green)",
-                      padding: "3px 8px",
-                      fontFamily: "var(--font-press-start), monospace",
-                      fontSize: "0.4rem",
-                      color: "#000",
-                    }}
-                  >
-                    {blog.tag}
-                  </div>
-                </div>
+              <div className="relative aspect-[16/9] overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-surface-2)]">
+                <Image
+                  src={blog.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 360px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
 
-                {/* Body */}
-                <div
-                  style={{
-                    padding: "1rem 1.25rem 1.25rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                    flex: 1,
-                  }}
-                >
-                  {/* Meta */}
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-press-start), monospace",
-                        fontSize: "0.4rem",
-                        color: "var(--neon-purple)",
-                        letterSpacing: "0.06em",
-                      }}
-                    >
-                      {blog.date}
-                    </span>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        width: 3,
-                        height: 3,
-                        background: "var(--neon-purple)",
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontFamily: "var(--font-press-start), monospace",
-                        fontSize: "0.4rem",
-                        color: "var(--neon-purple)",
-                      }}
-                    >
-                      MEDIUM
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-press-start), monospace",
-                      fontSize: "clamp(0.5rem, 1.3vw, 0.65rem)",
-                      color: "#fff",
-                      lineHeight: 1.7,
-                      textTransform: "uppercase",
-                      margin: 0,
-                    }}
-                  >
-                    {blog.title}
-                  </h3>
-
-                  {/* Excerpt */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-vt323), monospace",
-                      fontSize: "1.05rem",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.6,
-                      display: "-webkit-box",
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                      margin: 0,
-                      flex: 1,
-                    }}
-                  >
-                    {blog.excerpt}
-                  </p>
-
-                  {/* CTA */}
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      borderTop: "2px solid #111",
-                      paddingTop: 10,
-                      marginTop: 4,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-press-start), monospace",
-                        fontSize: "0.45rem",
-                        color: "var(--neon-green)",
-                        textShadow: "0 0 8px var(--neon-green)",
-                      }}
-                    >
-                      ▶ READ LOG
-                    </span>
-                    <div
-                      style={{
-                        flex: 1,
-                        height: 2,
-                        background:
-                          "repeating-linear-gradient(90deg, var(--neon-green) 0 4px, transparent 4px 8px)",
-                        opacity: 0.3,
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontFamily: "var(--font-press-start), monospace",
-                        fontSize: "0.4rem",
-                        color: "#444",
-                      }}
-                    >
-                      ↗
-                    </span>
-                  </div>
-                </div>
-              </article>
+              <div className="flex flex-1 flex-col gap-3 p-5">
+                <p className="font-mono text-xs text-[var(--color-subtle)]">
+                  {blog.date} · {blog.tag.toLowerCase()}
+                </p>
+                <h3 className="line-clamp-3 font-medium leading-snug tracking-tight">
+                  {blog.title}
+                </h3>
+                <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-[var(--color-muted)]">
+                  {blog.excerpt}
+                </p>
+                <span className="pt-1 text-sm font-medium text-[var(--color-text)] transition-colors group-hover:text-[var(--color-accent)]">
+                  Read article ↗
+                </span>
+              </div>
             </a>
           ))}
         </div>
+
+        <a
+          href={siteConfig.links.medium}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="reveal mt-8 inline-block text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
+        >
+          More on Medium ↗
+        </a>
       </div>
     </section>
   );
