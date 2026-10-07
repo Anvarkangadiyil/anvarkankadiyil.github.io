@@ -14,8 +14,6 @@ export const siteConfig = {
       "https://drive.google.com/file/d/12-205Kh_BYdLPHFx4w4M7K_CQamky6M7/view?usp=sharing",
   },
   email: "anvarkangadiyil@gmail.com",
-  contactFormEndpoint:
-    "https://script.google.com/macros/s/AKfycbw6e2JOFZv1LdK3th3y-lR3Q6f57XyCXqcZPzvH_aryPGoiK9QLsJfKJNm9RGWDJpyy/exec",
 };
 
 // `file` is how each section appears in the editor-style tabs, status bar and palette
